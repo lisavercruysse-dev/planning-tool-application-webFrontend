@@ -27,10 +27,10 @@ const TaskCardMemoized = memo(function TaskCard({
   type,
   omschrijving,
   duurtijd,
-  starttijd,
+  startdatum,
   status,
 }) {
-  const endTime = new Date(new Date(starttijd).getTime() + duurtijd * 60000);
+  const endTime = new Date(new Date(startdatum).getTime() + duurtijd * 60000);
 
   return (
     <div className="p-4 h-29.25 flex ">
@@ -47,7 +47,7 @@ const TaskCardMemoized = memo(function TaskCard({
           <div className="flex card-text items-center">
             <IoMdTime className="mr-1" />
             <p className="">
-              {`${timeFormat.format(new Date(starttijd))} - ${timeFormat.format(endTime)}`}
+              {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
           <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white">

@@ -6,7 +6,7 @@ const TASK_DATA = [
     type: "Inspectie",
     omschrijving: "Kwaliteitscontrole lijn B",
     duurtijd: 60,
-    starttijd: "2026-03-02T09:00:00", // Maandag
+    startdatum: "2026-03-02T09:00:00", // Maandag
     status: "Afgewerkt",
   },
   {
@@ -14,7 +14,7 @@ const TASK_DATA = [
     type: "Onderhoud",
     omschrijving: "Preventief onderhoud machine A1",
     duurtijd: 120,
-    starttijd: "2026-03-04T08:00:00", // Woensdag
+    startdatum: "2026-03-04T08:00:00", // Woensdag
     status: "Gepland",
   },
   {
@@ -22,7 +22,7 @@ const TASK_DATA = [
     type: "Productie",
     omschrijving: "Productie batch PET flessen 1,5L",
     duurtijd: 240,
-    starttijd: "2026-03-05T13:00:00", // Donderdag namiddag
+    startdatum: "2026-03-05T13:00:00", // Donderdag namiddag
     status: "Gepland",
   },
   {
@@ -30,7 +30,7 @@ const TASK_DATA = [
     type: "Reparatie",
     omschrijving: "Herstellen sensor foutcode E17",
     duurtijd: 90,
-    starttijd: "2026-03-06T10:30:00", // Vrijdag voormiddag
+    startdatum: "2026-03-06T10:30:00", // Vrijdag voormiddag
     status: "Gepland",
   },
 ];
