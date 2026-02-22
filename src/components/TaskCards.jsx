@@ -1,14 +1,7 @@
 import TaskCard from "./TaskCard";
+import img from "../assets/boxlogo.png";
 
 export function TaskCards({ tasks }) {
-  //   if (tasks.length === 0) {
-  //     return (
-  //       <div data-cy='empty' className='p-4 mb-4 text-sm text-gray-800 rounded-lg bg-gray-100'>
-  //         There are no tasks yet.
-  //       </div>
-  //     );
-  //   }
-
   return (
     <div className="border border-gray-200 rounded-[10px] flex flex-col w-full">
       {/* header */}
@@ -26,9 +19,20 @@ export function TaskCards({ tasks }) {
 
       {/* taken */}
       <div className="divide-y divide-gray-200">
-        {tasks.map((t) => (
-          <TaskCard key={t.id} {...t} />
-        ))}
+        {tasks.length ? (
+          tasks.map((t) => <TaskCard key={t.id} {...t} />)
+        ) : (
+          <div className="w-full flex justify-center mt-10 mb-20">
+            <div>
+              <img src={img} alt="niks gevonden" className="max-w-xs ml-0" />
+              <p className="card-title text-center">Geen resultaten</p>
+              <p className="card-text text-center">
+                Er werden geen taken gevonden die aan je <br />
+                zoekcriteria voldoen
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
