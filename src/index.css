@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    font-family: "Arimo", sans-serif;
+  }
 }
 
 @layer components {
+  /* Titel class */
+  .card-title {
+    @apply text-[16px] text-[#171717];
+  }
+
+  /* Ondertekst class */
+  .card-text {
+    @apply text-[14px] text-[#525252];
+  }
 }
