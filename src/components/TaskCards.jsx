@@ -24,7 +24,12 @@ export function TaskCards({ tasks }) {
         ) : (
           <div className="w-full flex justify-center mt-10 mb-20">
             <div>
-              <img src={img} alt="niks gevonden" className="max-w-xs ml-0" />
+              <img
+                src={img}
+                alt="niks gevonden"
+                className="max-w-xs ml-0"
+                data-cy="empty"
+              />
               <p className="card-title text-center">Geen resultaten</p>
               <p className="card-text text-center">
                 Er werden geen taken gevonden die aan je <br />
