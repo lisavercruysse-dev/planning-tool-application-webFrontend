@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { TASK_DATA } from "../api/mock_data";
-import { TaskCards } from "../components/TaskCards";
+import { TaskCards } from "../components/tasks/TaskCards";
 
 export default function TaskList() {
   const [searchQuery, setSearchQuery] = useState("");
