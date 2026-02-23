@@ -34,7 +34,7 @@ export function TaskCards({ tasks, searchQuery, setSearchQuery }) {
           tasks.map((t) => <TaskCard key={t.id} {...t} />)
         ) : (
           <div className="w-full flex flex-col items-center justify-center mt-10 mb-20">
-            <img src={img} alt="niks gevonden" className="max-w-xs" />
+            <img src={img} alt="niks gevonden" className="max-w-xs" data-cy="empty" />
             <p className="card-title text-center mt-4">Geen resultaten</p>
             <p className="card-text text-center mt-2">
               Er werden geen taken gevonden die aan je <br />
