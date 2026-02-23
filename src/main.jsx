@@ -1,10 +1,37 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import TaskList from "./pages/taskList";
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
+import Layout from "./pages/Layout.jsx";
+import TaskList from "./pages/taskList.jsx";
+import Login from "./pages/Login.jsx";
+import { Navigate } from "react-router";
+
+const router = createBrowserRouter([
+  {
+    Component: Layout,
+    children: [
+      {
+        path: "/",
+        element: <Navigate replace to="/dashboard" />,
+      },
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/planning",
+        Component: TaskList,
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <TaskList />
+    {/* <AuthProvider> */}
+    <RouterProvider router={router} />
+    {/* </AuthProvider> */}
   </StrictMode>,
 );

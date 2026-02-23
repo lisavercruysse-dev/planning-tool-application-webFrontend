@@ -1,5 +1,5 @@
 import TaskCard from "./TaskCard";
-import img from "../assets/boxlogo.png";
+import img from "../../assets/boxlogo.png";
 
 export function TaskCards({ tasks }) {
   return (

@@ -16,4 +16,11 @@
   .card-text {
     @apply text-[14px] text-[#525252];
   }
+
+  .primary {
+    @apply bg-[#030213] text-white text-[14px] py-2 px-4 rounded-lg;
+  }
+  .secondary {
+    @apply border border-gray-200 text-black text-[14px] py-2 px-4 rounded-lg;
+  }
 }
