@@ -1,4 +1,3 @@
-
 describe("Task list", () => {
   beforeEach(() => {
     cy.login("user@example.com", "12345678"); // nog toevoegen aan seeding in api
@@ -11,9 +10,37 @@ describe("Task list", () => {
 
     cy.visit("http://localhost:5173/planning");
     cy.get("[data-cy=task]").should("have.length", 4);
-    cy.get("[data-cy=task_description]").eq(0).contains("Kwaliteitscontrole lijn B");
+    cy.get("[data-cy=task_description]")
+      .eq(0)
+      .contains("Kwaliteitscontrole lijn B");
     cy.get("[data-cy=task_time]").eq(0).should("contain", "09:00 - 10:00");
     cy.get("[data-cy=task_type]").eq(0).should("contain", "Inspectie");
+  });
+
+  it("should filter tasks by description", () => {
+    cy.intercept("GET", "http://localhost:3000/api/tasks", {
+      fixture: "tasks.json",
+    });
+    cy.visit("http://localhost:5173/planning");
+    cy.get("input[placeholder='omschrijving']").type("onderhoud");
+    cy.get("[data-cy=task]").should("have.length", 1);
+    cy.get("[data-cy=task_description]").should(
+      "contain",
+      "Preventief onderhoud machine A1",
+    );
+  });
+
+  it("should filter tasks by date", () => {
+    cy.intercept("GET", "http://localhost:3000/api/tasks", {
+      fixture: "tasks.json",
+    });
+    cy.visit("http://localhost:5173/planning");
+    cy.get("input[type='date']").type("2026-03-04");
+    cy.get("[data-cy=task]").should("have.length", 1);
+    cy.get("[data-cy=task_description]").should(
+      "contain",
+      "Preventief onderhoud machine A1",
+    );
   });
 
   it("should show a loading indicator for a very slow response", () => {
