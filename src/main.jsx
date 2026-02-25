@@ -4,9 +4,12 @@ import "./index.css";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
-import TaskList from "./pages/taskList.jsx";
+import TaskList from "./pages/TaskList.jsx";
 import Login from "./pages/Login.jsx";
 import { Navigate } from "react-router";
+import Afwezigheden from "./pages/Afwezigheden.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Meldingen from "./pages/Meldingen.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,18 @@ const router = createBrowserRouter([
       {
         path: "/planning",
         Component: TaskList,
+      },
+      {
+        path: '/afwezigheden',
+        Component: Afwezigheden,
+      },
+      {
+        path: '/dashboard',
+        Component: Dashboard,
+      },
+      {
+        path: '/meldingen',
+        Component: Meldingen,
       },
     ],
   },
