@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
-import TaskList from "./pages/taskList.jsx";
+import TaskList from "./pages/TaskList.jsx";
 import Login from "./pages/Login.jsx";
 import { Navigate } from "react-router";
 
