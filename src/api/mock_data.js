@@ -33,6 +33,22 @@ const TASK_DATA = [
     startdatum: "2026-03-06T10:30:00", // Vrijdag voormiddag
     status: "Gepland",
   },
+  {
+    id: 5,
+    type: "Reparatie",
+    omschrijving: "Herstellen sensor foutcode E18",
+    duurtijd: 90,
+    startdatum: "2026-03-06T13:00:00", // Vrijdag namiddag
+    status: "Afgewerkt",
+  },
+  {
+    id: 6,
+    type: "Onderhoud",
+    omschrijving: "Onderhoud verpakkingsmachine P2",
+    duurtijd: 120,
+    startdatum: "2026-03-06T14:30:00", // Vrijdag namiddag
+    status: "Gepland",
+  },
 ];
 
 export { TASK_DATA };
