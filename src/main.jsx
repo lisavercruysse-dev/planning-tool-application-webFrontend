@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
 import TaskList from "./pages/taskList.jsx";
 import Login from "./pages/Login.jsx";
+import AbsenceOverview from "./pages/AbsenceOverview.jsx";
 import { Navigate } from "react-router";
 
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/planning",
         Component: TaskList,
+      },
+      {
+        path: "/afwezigheden",
+        Component: AbsenceOverview,
       },
     ],
   },
