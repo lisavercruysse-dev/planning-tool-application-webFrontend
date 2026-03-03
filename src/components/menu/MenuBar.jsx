@@ -3,6 +3,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { IoCalendarOutline } from "react-icons/io5";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { NavLink } from "react-router";
 
 import img from '../../assets/delaware.png'
 
@@ -13,10 +14,18 @@ export default function MenuBar(){
             <div className="p-10 border-b border-[#E5E5E5]">
                 <img className="h-11.5 w-38.5" src={img}/>
             </div>
-            <MenuItem name='Dashboard' icon={LuLayoutDashboard}/>
-            <MenuItem name='Mijn Planning' icon={IoCalendarOutline}/>
-            <MenuItem name='Afwezigheden' icon={IoCalendarClearOutline} />
-            <MenuItem name='Meldingen' icon={IoNotificationsOutline} />
+            <NavLink to='/dashboard' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
+                <MenuItem name='Dashboard' icon={LuLayoutDashboard}/>
+            </NavLink>
+            <NavLink to='/planning' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
+                <MenuItem name='Mijn Planning' icon={IoCalendarOutline}/>
+            </NavLink>
+            <NavLink to='/afwezigheden' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
+                <MenuItem name='Afwezigheden' icon={IoCalendarClearOutline} />
+            </NavLink>
+            <NavLink to='/meldingen' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
+                <MenuItem name='Meldingen' icon={IoNotificationsOutline} />
+            </NavLink>
         </div>
     )
 }
