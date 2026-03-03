@@ -1,4 +1,5 @@
 import React from "react";
+import { Calendar } from "lucide-react";
 
 export default function AbsenceRow({ item }) {
   return (
@@ -7,20 +8,7 @@ export default function AbsenceRow({ item }) {
       className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-[#f8f9fa] rounded-lg border border-gray-100 gap-4"
     >
       <div className="flex items-start gap-3">
-        <svg
-          className="w-5 h-5 text-gray-400 mt-0.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
+        <Calendar className="w-5 h-5 text-gray-400 mt-0.5" strokeWidth={1.5} />
         <div>
           <p className="text-sm text-gray-800">
             {item.startDate} - {item.endDate}
