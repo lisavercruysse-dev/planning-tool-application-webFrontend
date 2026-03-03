@@ -13,15 +13,15 @@ import Meldingen from "./pages/Meldingen.jsx";
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    Component: Login,
+  },
+  {
     Component: Layout,
     children: [
       {
         path: "/",
         element: <Navigate replace to="/dashboard" />,
-      },
-      {
-        path: "/login",
-        Component: Login,
       },
       {
         path: "/planning",
