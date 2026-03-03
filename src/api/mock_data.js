@@ -33,6 +33,46 @@ const TASK_DATA = [
     startdatum: "2026-03-06T10:30:00", // Vrijdag voormiddag
     status: "Gepland",
   },
+  {
+    id: 5,
+    type: "Reparatie",
+    omschrijving: "Herstellen sensor foutcode E18",
+    duurtijd: 90,
+    startdatum: "2026-03-06T13:00:00", // Vrijdag namiddag
+    status: "Afgewerkt",
+  },
+  {
+    id: 6,
+    type: "Onderhoud",
+    omschrijving: "Onderhoud verpakkingsmachine P2",
+    duurtijd: 120,
+    startdatum: "2026-03-06T14:30:00", // Vrijdag namiddag
+    status: "Gepland",
+  },
 ];
 
-export { TASK_DATA };
+const USER_DATA = [
+  {
+    id: 1,
+    firstName: 'Jonas',
+    lastName: 'Van Aert',
+    email: 'Jonas.VanAert@example.com',
+    jobtitel: 'werknemer',
+  },
+  {
+    id: 2,
+    firstName: 'Jan',
+    lastName: 'Jansens',
+    email: 'Jan.Jansens@example.com',
+    jobtitel: 'manager',
+  },
+  {
+    id: 3,
+    firstName: 'Pieter',
+    lastName: 'De Bakker',
+    email: 'Pieter.DeBakker@example.com',
+    jobtitel: 'verantwoordelijke',
+  },
+]
+
+export { TASK_DATA, USER_DATA };

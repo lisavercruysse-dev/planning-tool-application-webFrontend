@@ -33,7 +33,7 @@ const TaskCardMemoized = memo(function TaskCard({
   const endTime = new Date(new Date(startdatum).getTime() + duurtijd * 60000);
 
   return (
-    <div className="p-4 h-29.25 flex ">
+    <div className="p-4 h-29.25 flex " data-cy="task">
       {/* markeer knop */}
       <div className="min-w-7.5">
         <button className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10"></button>
@@ -43,10 +43,12 @@ const TaskCardMemoized = memo(function TaskCard({
       <div className="flex w-full justify-between">
         {/* details van taak */}
         <div>
-          <p className="card-title mb-2">{omschrijving}</p>
+          <p className="card-title mb-2" data-cy="task_description">
+            {omschrijving}
+          </p>
           <div className="flex card-text items-center">
             <IoMdTime className="mr-1" />
-            <p className="">
+            <p className="" data-cy="task_time">
               {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
@@ -57,7 +59,10 @@ const TaskCardMemoized = memo(function TaskCard({
 
         {/* type van taak */}
         <div className="flex items-center">
-          <p className={`h-fit px-2 py-1 rounded-sm ${getColorClass(type[0])}`}>
+          <p
+            data-cy="task_type"
+            className={`h-fit px-2 py-1 rounded-sm ${getColorClass(type[0])}`}
+          >
             {type}
           </p>
         </div>
