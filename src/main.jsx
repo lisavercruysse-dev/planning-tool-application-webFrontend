@@ -8,7 +8,6 @@ import TaskList from "./pages/TaskList.jsx";
 import Login from "./pages/Login.jsx";
 import AbsenceOverview from "./pages/AbsenceOverview.jsx";
 import { Navigate } from "react-router";
-import Afwezigheden from "./pages/Afwezigheden.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Meldingen from "./pages/Meldingen.jsx";
 
@@ -29,15 +28,15 @@ const router = createBrowserRouter([
         Component: TaskList,
       },
       {
-        path: '/afwezigheden',
-        Component: Afwezigheden,
+        path: "/afwezigheden",
+        Component: AbsenceOverview,
       },
       {
-        path: '/dashboard',
+        path: "/dashboard",
         Component: Dashboard,
       },
       {
-        path: '/meldingen',
+        path: "/meldingen",
         Component: Meldingen,
       },
     ],
