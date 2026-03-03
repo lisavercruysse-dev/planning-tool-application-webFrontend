@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
 import TaskList from "./pages/TaskList.jsx";
 import Login from "./pages/Login.jsx";
+import AbsenceOverview from "./pages/AbsenceOverview.jsx";
 import { Navigate } from "react-router";
 import Afwezigheden from "./pages/Afwezigheden.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
