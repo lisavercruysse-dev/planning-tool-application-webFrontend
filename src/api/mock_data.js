@@ -51,4 +51,28 @@ const TASK_DATA = [
   },
 ];
 
-export { TASK_DATA };
+const USER_DATA = [
+  {
+    id: 1,
+    firstName: 'Jonas',
+    lastName: 'Van Aert',
+    email: 'Jonas.VanAert@example.com',
+    jobtitel: 'werknemer',
+  },
+  {
+    id: 2,
+    firstName: 'Jan',
+    lastName: 'Jansens',
+    email: 'Jan.Jansens@example.com',
+    jobtitel: 'manager',
+  },
+  {
+    id: 3,
+    firstName: 'Pieter',
+    lastName: 'De Bakker',
+    email: 'Pieter.DeBakker@example.com',
+    jobtitel: 'verantwoordelijke',
+  },
+]
+
+export { TASK_DATA, USER_DATA };
