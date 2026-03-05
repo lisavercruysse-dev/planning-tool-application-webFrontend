@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import { TASK_DATA } from "../api/mock_data";
-import { TaskCards } from "../components/tasks/TaskCards";
+import { TaskList }  from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
 import { DatePicker } from "../components/DatePicker";
 
-export default function TaskList() {
+export default function Planning() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
@@ -31,7 +31,7 @@ export default function TaskList() {
       /></div>
 
       <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
-      <TaskCards
+      <TaskList 
         tasks={filteredTasks}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
