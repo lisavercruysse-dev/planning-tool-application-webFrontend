@@ -29,6 +29,8 @@ const TaskCardMemoized = memo(function TaskCard({
   duurtijd,
   startdatum,
   status,
+  task,
+  onDetailsClick
 }) {
   const endTime = new Date(new Date(startdatum).getTime() + duurtijd * 60000);
 
@@ -52,7 +54,7 @@ const TaskCardMemoized = memo(function TaskCard({
               {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
-          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white">
+          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white" onClick={onDetailsClick}>
             Details
           </button>
         </div>
