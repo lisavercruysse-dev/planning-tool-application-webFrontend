@@ -29,7 +29,7 @@ export default function TaskDetailsModal ({isOpen, onClose , task}) {
                                 Specificaties
                             </p>
                             <p className="text-[#737373] max-w-80">
-                                Start en controleer assembalgelijn AL-07 en voer een korte testrun uit
+                                {task.specificaties}
                             </p>
                         </div>
                     </div>
@@ -37,27 +37,27 @@ export default function TaskDetailsModal ({isOpen, onClose , task}) {
                         <div className="flex flex-col">
                             <div className="flex gap-3 items-center">
                                 <FaRegCalendar/>
-                                11/12/2025
+                                {task.startdatum.split("T")[0]}
                             </div>
                             <div className="flex gap-3 text-[#737373] items-center">
                                 <CiClock2/>
-                                14:00 - 17:00
+                                {task.startdatum.split("T")[1].slice(0,5)}
                             </div>
                         </div>
                         <div>
                             <p>Type taak</p>
-                            <p className="text-[#737373]">productie</p>
+                            <p className="text-[#737373]">{task.type}</p>
                         </div>
                         <div>
                             <p>Afwerktijd</p>
-                            <p className="text-[#737373]">/</p>
+                            <p className="text-[#737373]">{task.duurtijd ? task.duurtijd + " minuten" : "/"}</p>
                         </div>
                     </div>
                 </div>
                 <div className="flex bg-[#F2F2F2] px-8 py-5 justify-between">
                     <div>
                         <p>Machine</p>
-                        <p className="text-[#737373]">MC-PLT-001</p>
+                        <p className="text-[#737373]">{task.machine}</p>
                     </div>
                     <div>
                         <p>Site</p>

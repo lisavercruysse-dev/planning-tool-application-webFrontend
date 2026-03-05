@@ -54,7 +54,7 @@ const TaskCardMemoized = memo(function TaskCard({
               {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
-          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white" onClick={onDetailsClick}>
+          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white hover:cursor-pointer hover:bg-[#B7C2D2]" onClick={onDetailsClick}>
             Details
           </button>
         </div>
