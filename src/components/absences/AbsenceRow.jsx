@@ -1,7 +1,7 @@
 import React from "react";
 import { Calendar } from "lucide-react";
 
-export default function AbsenceRow({ item }) {
+export default function AbsenceRow({ item, onCancel }) {
   return (
     <div
       data-cy="absence-row"
@@ -22,18 +22,21 @@ export default function AbsenceRow({ item }) {
             Vakantie
           </span>
         )}
-        {item.status === "In behandeling" && (
-          <span className="px-2 py-1 bg-[#fef3c7] text-[#b45309] rounded text-xs">
-            In behandeling
-          </span>
-        )}
         {item.type === "Ziekte" && (
           <span className="px-2 py-1 bg-[#fee2e2] text-[#b91c1c] rounded text-xs">
             Ziekte
           </span>
         )}
+        {item.status === "In behandeling" && (
+          <span className="px-2 py-1 bg-[#fef3c7] text-[#b45309] rounded text-xs">
+            In behandeling
+          </span>
+        )}
         {item.canCancel && (
-          <button className="px-3 py-1 bg-white border border-gray-300 text-gray-700 rounded text-xs hover:bg-gray-50 transition-colors ml-auto sm:ml-2">
+          <button
+            onClick={() => onCancel(item.id)}
+            className="px-3 py-1 bg-white border border-gray-300 text-gray-700 rounded text-xs hover:bg-gray-50 transition-colors ml-auto sm:ml-2"
+          >
             Annuleren
           </button>
         )}
