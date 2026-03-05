@@ -4,13 +4,12 @@ import "./index.css";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
-import TaskList from "./pages/TaskList.jsx";
 import Login from "./pages/Login.jsx";
 import AbsenceOverview from "./pages/AbsenceOverview.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
-import Meldingen from "./pages/Meldingen.jsx";
+import Planning from "./pages/Planning.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/planning",
-        Component: TaskList,
+        Component: Planning,
       },
       {
         path: "/afwezigheden",
