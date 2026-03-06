@@ -18,7 +18,7 @@ export default function MenuBar(){
                 <MenuItem name='Dashboard' icon={LuLayoutDashboard}/>
             </NavLink>
             <NavLink to='/planning' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
-                <MenuItem name='Mijn Planning' icon={IoCalendarOutline}/>
+                <MenuItem name='Planning' icon={IoCalendarOutline}/>
             </NavLink>
             <NavLink to='/afwezigheden' className='aria-[current=page]:bg-[#FADEDE] aria-[current=page]:text-[#CD1212]'>
                 <MenuItem name='Afwezigheden' icon={IoCalendarClearOutline} />
