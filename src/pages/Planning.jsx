@@ -3,10 +3,16 @@ import { TASK_DATA } from "../api/mock_data";
 import { TaskList }  from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
 import { DatePicker } from "../components/DatePicker";
+import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
+
 
 export default function Planning() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null)
+
+  const showModal = (task) => setSelectedTask(task);
+  const closeModal = () => setSelectedTask(null);
 
   const filteredTasks = useMemo(() => {
      return TASK_DATA.filter((task) => {
@@ -35,6 +41,13 @@ export default function Planning() {
         tasks={filteredTasks}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onTaskDetailsClick={showModal}
+      />
+
+      <TaskDetailsModal 
+        isOpen={!!selectedTask}
+        onClose={closeModal}
+        task={selectedTask}
       />
     </div>
   );
