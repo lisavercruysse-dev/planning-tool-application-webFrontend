@@ -1,11 +1,10 @@
 // src/components/tasks/PlanningTimeline.jsx
 import { useMemo } from "react";
 import { IoMdTime } from "react-icons/io";
+import { TimelineHourLabels } from "./TimelineHourLabels";
+import { TIMELINE_START, TIMELINE_END, TOTAL_HOURS, TASK_STATUS_COLORS, DEFAULT_TASK_COLOR } from './TimelineConfig.js';
+import { TimeLineLegend } from "./TimeLineLegend.jsx";
 
-const TIMELINE_START = 8;
-const TIMELINE_END = 17;
-const TOTAL_HOURS = TIMELINE_END - TIMELINE_START;
-const DEFAULT_COLOR = "bg-blue-100 border-blue-300 text-black-700";
 
 function toDateInputValue(date) {
   return date.toISOString().split("T")[0];
@@ -31,18 +30,8 @@ export function PlanningTimeline({ tasks, selectedDate }) {
     <div className="bg-white rounded-lg border border-gray-200 overflow-x-hidden mb-6">
       <div className="min-w-200">
 
-        {/* Hour labels */}
-        <div className="flex border-b border-gray-200">
-          <div className="w-40 shrink-0" />
-          {Array.from({ length: TOTAL_HOURS + 1 }, (_, i) => (
-            <div
-              key={i}
-              className="flex-1 text-center py-2 text-xs text-gray-400 border-l border-gray-100"
-            >
-              {String(TIMELINE_START + i).padStart(2, "0")}:00
-            </div>
-          ))}
-        </div>
+        <TimeLineLegend />
+        <TimelineHourLabels />
 
         {/* Timeline row */}
         <div className="flex relative min-h-22">
@@ -95,7 +84,7 @@ export function PlanningTimeline({ tasks, selectedDate }) {
               const endDate = new Date(start.getTime() + task.duurtijd * 60000);
               const timeLabel = `${start.getHours()}:${String(start.getMinutes()).padStart(2, "0")} - ${endDate.getHours()}:${String(endDate.getMinutes()).padStart(2, "0")}`;
 
-              const colorClass = DEFAULT_COLOR;
+              const colorClass = TASK_STATUS_COLORS[task.status] || DEFAULT_TASK_COLOR;
 
               return (
                 <div
