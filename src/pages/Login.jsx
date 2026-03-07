@@ -1,12 +1,12 @@
-// src/pages/Login.jsx
-import { useCallback } from "react";
 import { useNavigate, useLocation } from "react-router";
+import { useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import LabelInput from "../components/LabelInput";
 import img from "../assets/delaware.png";
+import { useAuth } from '../contexts/auth';
+import Error from '../components/Error';
 
 const validationRules = {
-  // als op submit gedrukt wordt worden deze regels gevalideerd
   email: {
     required: "Email is required",
   },
@@ -16,32 +16,37 @@ const validationRules = {
 };
 
 export default function Login() {
-  const error = ""; // weg doen
-  const loading = false; // weg doen
-  //const { error, loading, login } = useAuth();
+  const { error, loading, login } = useAuth();
   const navigate = useNavigate();
   const { search } = useLocation();
 
   const methods = useForm({
     defaultValues: {
-      email: "user@example.com",
-      password: "12345678",
+      email: 'Pieter.DeBakker@example.com',
+      password: '12345678',
     },
   });
+
   const { handleSubmit, reset } = methods;
 
   const handleCancel = useCallback(() => {
     reset();
   }, [reset]);
-  const handleLogin = useCallback();
-  // async ({ email, password }) => {
-  //   const loggedIn = await login({ email, password });
-  //   if (loggedIn) {
-  //     const params = new URLSearchParams(search);
-  //     navigate(params.get("redirect") || "/", { replace: true });
-  //   }
-  // },
-  // [login, navigate, search],
+
+  const handleLogin = useCallback(
+    async ({email, password}) => {
+      const loggedIn = await login(email, password);
+
+      if (loggedIn) {
+        const params = new URLSearchParams(search)
+        navigate({
+          pathname: params.get('redirect') || '/',
+          replace: true,
+        });
+      }
+    },
+    [login, navigate, search],
+  ); 
 
   return (
     <div className="relative h-screen bg-[#F9F9F9]">
@@ -60,6 +65,7 @@ export default function Login() {
             >
               <div>
                 <p className="card-title font-bold">Aanmelden</p>
+                <Error error={error} />
                 <p className="card-text">Vul uw email en wachtwoord in.</p>
               </div>
               <LabelInput

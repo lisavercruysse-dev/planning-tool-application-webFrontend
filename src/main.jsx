@@ -10,6 +10,7 @@ import Notifications from "./pages/Notifications.jsx";
 import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
+import { AuthProvider } from "./contexts/Auth.context.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,8 +46,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* <AuthProvider> */}
-    <RouterProvider router={router} />
-    {/* </AuthProvider> */}
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider> 
   </StrictMode>,
 );
