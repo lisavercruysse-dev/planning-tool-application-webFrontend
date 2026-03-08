@@ -1,10 +1,8 @@
 import { Navigate, Outlet, useLocation } from "react-router";
+import { useAuth } from '../contexts/auth';
 
-export default function PrivateRoute({ role = "" }) {
-  //const { ready, isAuthed, hasRole } = useAuth();
-  (ready, (isAuthed = (true, true)));
-  // verander wanneer useAuth kan gebruikt worden
-
+export default function PrivateRoute() {
+  const { ready, isAuthed } = useAuth();
   const { pathname } = useLocation();
 
   if (!ready) {
