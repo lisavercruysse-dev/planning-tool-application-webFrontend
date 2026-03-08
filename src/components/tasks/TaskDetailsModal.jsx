@@ -4,17 +4,33 @@ import { CiClock2 } from "react-icons/ci";
 import { useState } from "react";
 
 export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit }) {
+  const [amountMinutes, setAmountMinutes] = useState("");
+  const [errors, setErrors] = useState({});
 
-    const [amountMinutes, setAmountMinutes] = useState("")
+  const validate = () => {
+    const newErrors = {};
+
+    if (!amountMinutes) {
+      newErrors.amountMinutes = "Aantal minuten is verplicht.";
+    } else if (isNaN(amountMinutes) || Number(amountMinutes) <= 0) {
+      newErrors.amountMinutes = "Aantal minuten moet minstens 15 zijn.";
+    } else if (Number(amountMinutes) > 1440) {
+      newErrors.amountMinutes = "Aantal minuten mag niet meer dan 480 zijn.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({amountMinutes});
-    onClose();
-  }
+    if (validate()) {
+      onSubmit({ ...task, duurtijd: Number(amountMinutes), status: "completed" });
+      onClose();
+    }
+  };
 
   if (!isOpen || !task) return null;
-
 
   return (
     <div
@@ -39,36 +55,41 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
         </div>
 
         {type === "complete" ? (
-            <div className="flex flex-col p-5 gap-2 items-start">
-                <label className="text-sm text-gray-700">
-                    Tijd die nodig was om de taak af te werken
-                </label>
-                <form onSubmit={handleSubmit} className="w-full">
-                    <input
-                        type="number"
-                        value={amountMinutes}
-                        onChange={(e) => setAmountMinutes(e.target.value)}
-                        placeholder="Aantal minuten"
-                        className="w-full bg-[#F3F3F5] rounded-md px-3 py-2 text-sm text-[#717182] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <div className="flex items-center justify-end gap-3 mt-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
-                        >
-                        Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
-                            onClick={() => onSubmit({...task, status: "completed"})}
-                        >
-                            Bevestigen
-                        </button>
-                    </div>
-                </form>
-            </div>
+          <div className="flex flex-col p-5 gap-2 items-start">
+            <label className="text-sm text-gray-700">
+              Tijd die nodig was om de taak af te werken
+            </label>
+            <form onSubmit={handleSubmit} className="w-full">
+              <input
+                type="number"
+                value={amountMinutes}
+                onChange={(e) => setAmountMinutes(e.target.value)}
+                placeholder="Aantal minuten"
+                className={`w-full bg-[#F3F3F5] rounded-md px-3 py-2 text-sm text-[#717182] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  errors.amountMinutes ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.amountMinutes && (
+                <p className="text-xs text-red-500 mt-1">{errors.amountMinutes}</p>
+              )}
+
+              <div className="flex items-center justify-end gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
+                >
+                  Bevestigen
+                </button>
+              </div>
+            </form>
+          </div>
         ) : (
           <>
             <div className="flex gap-8">
@@ -80,9 +101,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
 
                 <div>
                   <p>Specificaties</p>
-                  <p className="text-[#737373] max-w-80">
-                    {task.specificaties}
-                  </p>
+                  <p className="text-[#737373] max-w-80">{task.specificaties}</p>
                 </div>
               </div>
 
