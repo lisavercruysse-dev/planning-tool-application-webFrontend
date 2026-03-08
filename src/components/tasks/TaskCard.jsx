@@ -42,6 +42,7 @@ const TaskCardMemoized = memo(function TaskCard({
       <div className="min-w-7.5">
         <button className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10 cursor-pointer flex items-center justify-center text-xs"
         onClick={status !== "completed" ? onCompleted : onCancel}
+        data-cy='complete_button'
         >{status === "completed" ? "x" : ""}</button>
       </div>
 
@@ -58,7 +59,7 @@ const TaskCardMemoized = memo(function TaskCard({
               {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
-          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white hover:cursor-pointer hover:bg-[#B7C2D2]" onClick={onDetailsClick}>
+          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white hover:cursor-pointer hover:bg-[#B7C2D2]" onClick={onDetailsClick}  data-cy="detail_button">
             Details
           </button>
         </div>
