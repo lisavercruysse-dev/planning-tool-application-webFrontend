@@ -9,13 +9,26 @@ import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 export default function Planning() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null)
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [modelType, setModelType] = useState("");
+  const [tasks, setTasks] = useState(TASK_DATA);
 
-  const showModal = (task) => setSelectedTask(task);
-  const closeModal = () => setSelectedTask(null);
+  const handleSubmitTask = (updatedTask) => {
+    setTasks((oldList) => oldList.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+    closeModal();
+  }
+
+  const showModal = (task, type) => {
+    setSelectedTask(task);
+    setModelType(type)
+  }
+  const closeModal = () => {
+    setSelectedTask(null);
+    setModelType("");
+  }
 
   const filteredTasks = useMemo(() => {
-     return TASK_DATA.filter((task) => {
+     return tasks.filter((task) => {
       const matchesSearch = task.omschrijving
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -25,7 +38,7 @@ export default function Planning() {
 
       return matchesSearch && matchesDate;
     });
-  }, [searchQuery, selectedDate]);
+  }, [searchQuery, selectedDate, tasks]);
 
   return (
     <div className="mx-16 mt-8">
@@ -41,13 +54,16 @@ export default function Planning() {
         tasks={filteredTasks}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        onTaskDetailsClick={showModal}
+        onTaskDetailsClick={(task) => showModal(task, "details")}
+        onCompleted={(task) => showModal(task, "complete")}
       />
 
       <TaskDetailsModal 
         isOpen={!!selectedTask}
         onClose={closeModal}
         task={selectedTask}
+        type={modelType}
+        onSubmit={handleSubmitTask}
       />
     </div>
   );

@@ -30,7 +30,8 @@ const TaskCardMemoized = memo(function TaskCard({
   startdatum,
   status,
   task,
-  onDetailsClick
+  onDetailsClick,
+  onCompleted
 }) {
   const endTime = new Date(new Date(startdatum).getTime() + duurtijd * 60000);
 
@@ -38,7 +39,9 @@ const TaskCardMemoized = memo(function TaskCard({
     <div className="p-4 h-29.25 flex " data-cy="task">
       {/* markeer knop */}
       <div className="min-w-7.5">
-        <button className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10"></button>
+        <button className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10 cursor-pointer flex items-center justify-center text-xs"
+        onClick={onCompleted}
+        >{status === "completed" ? "x" : ""}</button>
       </div>
 
       {/* taak inhoud */}
