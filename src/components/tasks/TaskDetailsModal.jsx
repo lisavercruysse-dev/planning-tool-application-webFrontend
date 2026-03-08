@@ -2,10 +2,19 @@ import { X } from "lucide-react";
 import { FaRegCalendar } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
 import { useState } from "react";
+import { useEffect } from "react";
 
 export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit }) {
   const [amountMinutes, setAmountMinutes] = useState("");
   const [errors, setErrors] = useState({});
+
+
+    useEffect(() => {
+    if (isOpen && task) {
+            setAmountMinutes("");
+            setErrors({});
+        }
+    }, [isOpen, task]);
 
   const validate = () => {
     const newErrors = {};
@@ -23,12 +32,17 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      onSubmit({ ...task, duurtijd: Number(amountMinutes), status: "completed" });
-      onClose();
-    }
-  };
+  e.preventDefault();
+
+  if (type === "complete") {
+    if (!validate()) return;
+    onSubmit({ ...task, duurtijd: Number(amountMinutes), status: "completed" });
+  } else if (type === "cancel") {
+    onSubmit({ ...task, duurtijd: "", status: "cancelled" });
+  }
+
+  onClose();
+};
 
   if (!isOpen || !task) return null;
 
@@ -50,7 +64,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
           </button>
 
           <h2 className="text-xl font-semibold text-gray-800">
-            {type === "complete" ? "Markeer taak als afgewerkt" : "Details taak"}
+            {type === "complete" ? "Markeer taak als afgewerkt" : type === "cancel" ? "Markeer als onafgewerkt" : "Details taak"}
           </h2>
         </div>
 
@@ -90,6 +104,25 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
               </div>
             </form>
           </div>
+        ) : type === "cancel" ? (
+            <div className="flex flex-col p-5 gap-2 items-start">
+                <p>
+                    Weet je zeker dat je de taak wil markeren als onafgewerkt?
+                    Al uw gespendeerde tijd zal gereset worden.
+                </p>
+                <div className="flex items-center justify-end gap-3 mt-4"> 
+                    <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                            onClick={onClose}
+                    >
+                        Annuleren
+                    </button>
+                    <button className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
+                            onClick={handleSubmit}
+                    >
+                        Bevestigen
+                    </button>
+                </div>   
+            </div>
         ) : (
           <>
             <div className="flex gap-8">

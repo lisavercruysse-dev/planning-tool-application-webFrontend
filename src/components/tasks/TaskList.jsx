@@ -1,6 +1,6 @@
 import { TaskCards } from './TaskCards.jsx'
 
-export function TaskList({tasks, searchQuery, setSearchQuery, onTaskDetailsClick, onCompleted}) {
+export function TaskList({tasks, searchQuery, setSearchQuery, onTaskDetailsClick, onCompleted, onCancel}) {
     return (
         <div>
             <TaskCards
@@ -9,6 +9,7 @@ export function TaskList({tasks, searchQuery, setSearchQuery, onTaskDetailsClick
                 setSearchQuery={setSearchQuery}
                 onTaskDetailsClick={onTaskDetailsClick}
                 onCompleted={onCompleted}
+                onCancel={onCancel}
               />
         </div>  
     )

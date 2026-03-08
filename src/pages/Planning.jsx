@@ -56,6 +56,7 @@ export default function Planning() {
         setSearchQuery={setSearchQuery}
         onTaskDetailsClick={(task) => showModal(task, "details")}
         onCompleted={(task) => showModal(task, "complete")}
+        onCancel={(task) => showModal(task, "cancel")}
       />
 
       <TaskDetailsModal 
@@ -64,6 +65,7 @@ export default function Planning() {
         task={selectedTask}
         type={modelType}
         onSubmit={handleSubmitTask}
+        onCancel={handleSubmitTask}
       />
     </div>
   );
