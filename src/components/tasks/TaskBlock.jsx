@@ -49,7 +49,7 @@ export function TaskBlock({ task, onEdit, onDelete }) {
       <div className="absolute bottom-1 right-1 gap-1">
         <button
           onClick={(e) => { e.stopPropagation(); onEdit(task); }}
-          className={`rounded p-0.5 ${colorClass.bg} border ${colorClass.border}`}
+          className={`rounded p-0.5 ${colorClass}`}
           title="Bewerken"
         >
           <FiEdit2 size={11} />
@@ -57,7 +57,7 @@ export function TaskBlock({ task, onEdit, onDelete }) {
 
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(task); }}
-          className={`rounded p-0.5 ${colorClass.bg} border ${colorClass.border}`}
+          className={`rounded p-0.5 ${colorClass}`}
           title="Verwijderen"
         >
           <FiTrash2 size={11} />
