@@ -87,4 +87,11 @@ const USER_DATA = [
   },
 ]
 
-export { TASK_DATA, USER_DATA };
+const PLANTS = ["Plant A", "Plant B"];
+
+const TEAMS = {
+  "Plant A": ["Team A", "Team B"],
+  "Plant B": ["Team C", "Team D"],
+};
+
+export { TASK_DATA, USER_DATA, PLANTS, TEAMS };

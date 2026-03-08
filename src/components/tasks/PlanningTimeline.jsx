@@ -1,21 +1,13 @@
 // src/components/tasks/PlanningTimeline.jsx
 import { useMemo } from "react";
-import { IoMdTime } from "react-icons/io";
 import { TimelineHourLabels } from "./TimelineHourLabels";
-import { TIMELINE_START, TIMELINE_END, TOTAL_HOURS, TASK_STATUS_COLORS, DEFAULT_TASK_COLOR } from './TimelineConfig.js';
+import { TOTAL_HOURS } from './TimelineConfig.js';
 import { TimeLineLegend } from "./TimeLineLegend.jsx";
+import { TaskBlock } from "./TaskBlock.jsx";
 
 
 function toDateInputValue(date) {
   return date.toISOString().split("T")[0];
-}
-
-function formatDuration(minutes) {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  if (hours === 0) return `${mins} min`;
-  if (mins === 0) return `${hours} uur`;
-  return `${hours}u${String(mins).padStart(2, "0")}`;
 }
 
 export function PlanningTimeline({ tasks, selectedDate }) {
@@ -70,44 +62,9 @@ export function PlanningTimeline({ tasks, selectedDate }) {
             )}
 
             {/* Task blocks */}
-            {dayTasks.map((task) => {
-              const start = new Date(task.startdatum);
-              const startDecimal = start.getHours() + start.getMinutes() / 60;
-              const durationHours = task.duurtijd / 60;
-
-              const clampedStart = Math.max(startDecimal, TIMELINE_START);
-              const clampedEnd = Math.min(startDecimal + durationHours, TIMELINE_END);
-
-              const left = ((clampedStart - TIMELINE_START) / TOTAL_HOURS) * 100;
-              const width = ((clampedEnd - clampedStart) / TOTAL_HOURS) * 100;
-
-              const endDate = new Date(start.getTime() + task.duurtijd * 60000);
-              const timeLabel = `${start.getHours()}:${String(start.getMinutes()).padStart(2, "0")} - ${endDate.getHours()}:${String(endDate.getMinutes()).padStart(2, "0")}`;
-
-              const colorClass = TASK_STATUS_COLORS[task.status] || DEFAULT_TASK_COLOR;
-
-              return (
-                <div
-                  key={task.id}
-                  title={`${task.type}: ${task.omschrijving}
-                  Tijd: ${timeLabel}
-                  Duur: ${formatDuration(task.duurtijd)}
-                  Status: ${task.status}
-                  `}
-                  className={`absolute top-0.5 bottom-0.5 rounded border px-2 py-1 overflow-hidden ${colorClass}`}
-                  style={{ left: `${left}%`, width: `${width}%` }}
-                >
-                  <p className="text-xs font-semibold truncate">{task.omschrijving}</p>
-                  <p className="text-[11px] opacity-75 mt-0.5">{timeLabel}</p>
-                  <div className="flex items-center">
-                    <IoMdTime className="mr-1" />
-                    <p className="text-[11px] opacity-75 mt-0.5">
-                      {formatDuration(task.duurtijd)} - {task.status}
-                    </p>
-                </div>
-                </div>
-              );
-            })}
+            {dayTasks.map((task) => (
+              <TaskBlock key={task.id} task={task}  />
+            ))}
 
           </div>
         </div>
