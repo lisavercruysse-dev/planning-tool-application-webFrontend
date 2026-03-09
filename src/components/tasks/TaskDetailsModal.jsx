@@ -55,7 +55,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
         className="bg-white rounded-xl shadow-xl w-full max-w-xl overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="border-b border-[#E5E5E5] p-6 flex flex-col gap-1 relative">
+        <div className="border-b border-[#E5E5E5] p-6 flex flex-col gap-1 relative" data-cy="task_modal">
           <button
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             onClick={onClose}
@@ -63,7 +63,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             <X className="w-5 h-5" />
           </button>
 
-          <h2 className="text-xl font-semibold text-gray-800">
+          <h2 className="text-xl font-semibold text-gray-800" data-cy='task_modal_title'>
             {type === "complete" ? "Markeer taak als afgewerkt" : type === "cancel" ? "Markeer als onafgewerkt" : "Details taak"}
           </h2>
         </div>
@@ -75,6 +75,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             </label>
             <form onSubmit={handleSubmit} className="w-full">
               <input
+                data-cy='task_complete_input'
                 type="number"
                 value={amountMinutes}
                 onChange={(e) => setAmountMinutes(e.target.value)}
@@ -84,7 +85,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
                 }`}
               />
               {errors.amountMinutes && (
-                <p className="text-xs text-red-500 mt-1">{errors.amountMinutes}</p>
+                <p className="text-xs text-red-500 mt-1" data-cy='task_below_15'>{errors.amountMinutes}</p>
               )}
 
               <div className="flex items-center justify-end gap-3 mt-4">
@@ -98,6 +99,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
                 <button
                   type="submit"
                   className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
+                  data-cy="task_complete_bevestig_button"
                 >
                   Bevestigen
                 </button>
@@ -113,11 +115,13 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
                 <div className="flex items-center justify-end gap-3 mt-4"> 
                     <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
                             onClick={onClose}
+                            data-cy='task_cancel_markeer_onafgewerkt'
                     >
                         Annuleren
                     </button>
                     <button className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
                             onClick={handleSubmit}
+                            data-cy='task_markeer_onafgewerkt'
                     >
                         Bevestigen
                     </button>
@@ -129,23 +133,23 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
               <div className="flex flex-col gap-5 p-6">
                 <div>
                   <p>Omschrijving</p>
-                  <p className="text-[#737373]">{task.omschrijving}</p>
+                  <p className="text-[#737373]" data-cy='taak_omschrijving'>{task.omschrijving}</p>
                 </div>
 
                 <div>
                   <p>Specificaties</p>
-                  <p className="text-[#737373] max-w-80">{task.specificaties}</p>
+                  <p className="text-[#737373] max-w-80" data-cy='taak_specificaties'>{task.specificaties}</p>
                 </div>
               </div>
 
               <div className="flex flex-col gap-5 p-6">
                 <div className="flex flex-col">
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-3 items-center" data-cy='taak_startdatum'>
                     <FaRegCalendar />
                     {task.startdatum.split("T")[0]}
                   </div>
 
-                  <div className="flex gap-3 text-[#737373] items-center">
+                  <div className="flex gap-3 text-[#737373] items-center" data-cy='taak_starttijd'>
                     <CiClock2 />
                     {task.startdatum.split("T")[1].slice(0, 5)}
                   </div>
@@ -153,12 +157,12 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
 
                 <div>
                   <p>Type taak</p>
-                  <p className="text-[#737373]">{task.type}</p>
+                  <p className="text-[#737373]" data-cy='taak_type'>{task.type}</p>
                 </div>
 
                 <div>
                   <p>Afwerktijd</p>
-                  <p className="text-[#737373]">
+                  <p className="text-[#737373]" data-cy='taak_duurtijd'>
                     {task.duurtijd ? task.duurtijd + " minuten" : "/"}
                   </p>
                 </div>
@@ -168,17 +172,17 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             <div className="flex bg-[#F2F2F2] px-8 py-5 justify-between">
               <div>
                 <p>Machine</p>
-                <p className="text-[#737373]">{task.machine}</p>
+                <p className="text-[#737373]" data-cy='taak_machine'>{task.machine}</p>
               </div>
 
               <div>
                 <p>Site</p>
-                <p className="text-[#737373]">Site Noord</p>
+                <p className="text-[#737373]" data-cy='taak_machine_sitelocatie'>Site Noord</p>
               </div>
 
               <div>
                 <p>Locatie In Site</p>
-                <p className="text-[#737373]">A001 - Hal A</p>
+                <p className="text-[#737373]" data-cy='taak_machine_locatie'>A001 - Hal A</p>
               </div>
             </div>
           </>
