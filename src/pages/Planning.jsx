@@ -6,6 +6,7 @@ import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 import { FilterBar } from "../components/FilterBar";
 import { MemberRow } from "../components/tasks/MemberRow";
 import { TimeLineLegend } from "../components/tasks/TimeLineLegend.jsx";
+import { useAuth } from "../contexts/auth";
 
 export default function Planning() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +16,10 @@ export default function Planning() {
   const [selectedTeam,  setSelectedTeam]  = useState(TEAMS[PLANTS[0]][0]);
   const [modelType, setModelType] = useState("");
   const [tasks, setTasks] = useState(TASK_DATA);
+
+  const { user } = useAuth();
+  const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
+  const isWerknemer = user?.jobTitel === "werknemer";
 
   // Update team when plant changes
   function handlePlantChange(p) {
@@ -79,9 +84,13 @@ export default function Planning() {
       />
       <TimeLineLegend />
 
-      <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
+      {/* Timeline werknemer */}
+      {isWerknemer && (
+        <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
+      )}
 
       {/* Member rows */}
+      {isManagerOrVerantwoordelijke && (
       <div className="divide-y divide-gray-100">
         {filteredMembers.length === 0 ? (
           <div className="py-10 text-center text-sm text-gray-400">
@@ -98,6 +107,7 @@ export default function Planning() {
           ))
         )}
       </div>
+      )}
 
       <TaskList 
         tasks={filteredTasks}
