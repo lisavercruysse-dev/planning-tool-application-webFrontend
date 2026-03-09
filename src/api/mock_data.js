@@ -10,6 +10,7 @@ const TASK_DATA = [
     status: "Afgewerkt",
     specificaties: "Start en controleer assemblagelijn AL-07 en voer een korte testrun uit.",
     machine: "MC-PLT-001",
+    memberId: 1
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const TASK_DATA = [
     status: "Gepland",
     specificaties: "Controleer en vervang slijtagegevoelige onderdelen, smeer bewegende delen en voer een testcyclus uit.",
     machine: "MC-ASD-023",
+    memberId: 4
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const TASK_DATA = [
     status: "Gepland",
     specificaties: "Start de productie op lijn C3, controleer de vulmachine, en houd de kwaliteit gedurende de batch in de gaten.",
     machine: "MC-PLT-100",
+    memberId: 5
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ const TASK_DATA = [
     status: "Gepland",
     specificaties: "Diagnosticeer sensor E17, vervang defecte componenten en voer kalibratie uit om correcte werking te garanderen.",
     machine: "MC-HST-003",
+    memberId: 6
   },
   {
     id: 5,
@@ -50,6 +54,7 @@ const TASK_DATA = [
     status: "Afgewerkt",
     specificaties: "Controleer foutcode E18, vervang defecte sensoronderdelen en voer een korte functionele test uit.",
     machine: "MC-PLT-100",
+    memberId: 7
   },
   {
     id: 6,
@@ -60,6 +65,7 @@ const TASK_DATA = [
     status: "Gepland",
     specificaties: "Controleer de sensoren en rollen, en voer een proefrun uit om de correcte werking te verifiëren.",
     machine: "MC-PLT-001",
+    memberId: 8
   },
 ];
 
@@ -70,6 +76,8 @@ const USER_DATA = [
     lastName: 'Van Aert',
     email: 'Jonas.VanAert@example.com',
     jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team A"
   },
   {
     id: 2,
@@ -85,7 +93,52 @@ const USER_DATA = [
     email: 'Pieter.DeBakker@example.com',
     jobtitel: 'verantwoordelijke',
   },
-]
+  {
+    id: 4,
+    firstName: 'Marie',
+    lastName: 'Vermeulen',
+    email: 'Marie.Vermeulen@example.com',
+    jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team A"
+  },
+  {
+    id: 5,
+    firstName: 'Sophie',
+    lastName: 'Peeters',
+    email: 'Sophie.Peeters@example.com',
+    jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team A"
+  },
+  {
+    id: 6,
+    firstName: 'Tom',
+    lastName: 'Claes',
+    email: 'Tom.Claes@example.com',
+    jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team B"
+  },
+  {
+    id: 7,
+    firstName: 'Lisa',
+    lastName: 'Willems',
+    email: 'Lisa.Willems@example.com',
+    jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team B"
+  },
+  {
+    id: 8,
+    firstName: 'Kevin',
+    lastName: 'Janssens',
+    email: 'Kevin.Janssens@example.com',
+    jobtitel: 'werknemer',
+    plant: "Plant A", 
+    team: "Team B"
+  }
+];
 
 const PLANTS = ["Plant A", "Plant B"];
 

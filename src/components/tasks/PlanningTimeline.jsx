@@ -21,8 +21,7 @@ export function PlanningTimeline({ tasks, selectedDate }) {
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-x-hidden mb-6">
       <div className="min-w-200">
-
-        <TimeLineLegend />
+        
         <TimelineHourLabels />
 
         {/* Timeline row */}

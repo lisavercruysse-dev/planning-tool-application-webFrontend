@@ -1,11 +1,12 @@
 import { useState, useMemo } from "react";
-import { TASK_DATA, PLANTS, TEAMS } from "../api/mock_data";
+import { TASK_DATA, PLANTS, TEAMS, USER_DATA } from "../api/mock_data";
 import { TaskList }  from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
-import { DatePicker } from "../components/DatePicker";
 import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 import { FilterBar } from "../components/FilterBar";
-
+import { MemberRow } from "../components/tasks/MemberRow";
+import { TimeLineLegend } from "../components/tasks/TimeLineLegend.jsx";
+import { useAuth } from "../contexts/auth";
 
 export default function Planning() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,12 +17,29 @@ export default function Planning() {
   const [modelType, setModelType] = useState("");
   const [tasks, setTasks] = useState(TASK_DATA);
 
+  const { user } = useAuth();
+  const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
+  const isWerknemer = user?.jobTitel === "werknemer";
+
   // Update team when plant changes
   function handlePlantChange(p) {
     setSelectedPlant(p);
     setSelectedTeam(TEAMS[p][0]);
   }
 
+  // Filtered members
+  const filteredMembers = useMemo(
+    () => USER_DATA.filter((m) => m.plant === selectedPlant && m.team === selectedTeam),
+    [selectedPlant, selectedTeam]
+  );
+
+  // Tasks per member for the selected day
+  function memberTasks(memberId) {
+    return tasks.filter((t) => {
+      const taskDate = t.startdatum.split("T")[0];
+      return t.memberId === memberId && taskDate === selectedDate;
+    });
+  }
 
   const handleSubmitTask = (updatedTask) => {
     setTasks((oldList) => oldList.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
@@ -64,8 +82,33 @@ export default function Planning() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
+      <TimeLineLegend />
 
-      <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
+      {/* Timeline werknemer */}
+      {isWerknemer && (
+        <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
+      )}
+
+      {/* Member rows */}
+      {isManagerOrVerantwoordelijke && (
+      <div className="divide-y divide-gray-100">
+        {filteredMembers.length === 0 ? (
+          <div className="py-10 text-center text-sm text-gray-400">
+            Geen teamleden gevonden voor de geselecteerde filters.
+          </div>
+        ) : (
+          filteredMembers.map((member) => (
+            <MemberRow
+              key={member.id}
+              member={member}
+              tasks={memberTasks(member.id)}
+
+            /> // onEdit en onDelete nog toevoegen
+          ))
+        )}
+      </div>
+      )}
+
       <TaskList 
         tasks={filteredTasks}
         searchQuery={searchQuery}

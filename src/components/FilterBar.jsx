@@ -1,10 +1,16 @@
 import { FiFilter } from "react-icons/fi";
 import { DatePicker } from "./DatePicker";
+import { useAuth } from "../contexts/auth";
 
 export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selectedDate, setSelectedDate }) {
+
+  const { user } = useAuth();
+  const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
+
   return (
     <div className="flex flex-wrap items-center gap-3 mb-5">
       {/* Plant filter */}
+      {isManagerOrVerantwoordelijke && (
       <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm">
         <FiFilter className="text-gray-400 text-xs" />
         <select
@@ -17,8 +23,10 @@ export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selecte
           ))}
         </select>
       </div>
+      )}
 
       {/* Team filter */}
+      {isManagerOrVerantwoordelijke && (
       <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm">
         <FiFilter className="text-gray-400 text-xs" />
         <select
@@ -31,6 +39,7 @@ export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selecte
           ))}
         </select>
       </div>
+      )}
 
       {/* Date selector */}
       <DatePicker
