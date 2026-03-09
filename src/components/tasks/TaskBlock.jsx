@@ -1,6 +1,7 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { IoMdTime } from "react-icons/io";
 import { TIMELINE_START, TIMELINE_END, TOTAL_HOURS, TASK_STATUS_COLORS, DEFAULT_TASK_COLOR } from './TimelineConfig.js';
+import { useAuth } from "../../contexts/auth";
 
 function formatDuration(minutes) {
   const hours = Math.floor(minutes / 60);
@@ -11,6 +12,9 @@ function formatDuration(minutes) {
 }
 
 export function TaskBlock({ task, onEdit, onDelete }) {
+  const { user } = useAuth();
+  const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
+
   const start = new Date(task.startdatum);
   const durationHours = task.duurtijd / 60;
   const startDecimal = start.getHours() + start.getMinutes() / 60;
@@ -46,6 +50,7 @@ export function TaskBlock({ task, onEdit, onDelete }) {
         </p>
       </div>
 
+      {isManagerOrVerantwoordelijke && (
       <div className="absolute bottom-1 right-1 gap-1">
         <button
           onClick={(e) => { e.stopPropagation(); onEdit(task); }}
@@ -54,7 +59,7 @@ export function TaskBlock({ task, onEdit, onDelete }) {
         >
           <FiEdit2 size={11} />
         </button>
-
+        
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(task); }}
           className={`rounded p-0.5 ${colorClass}`}
@@ -63,6 +68,8 @@ export function TaskBlock({ task, onEdit, onDelete }) {
           <FiTrash2 size={11} />
         </button>
       </div>
+      )}
+
     </div>
   );
 }
