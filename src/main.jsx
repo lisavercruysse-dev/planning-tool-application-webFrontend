@@ -10,6 +10,7 @@ import Notifications from "./pages/Notifications.jsx";
 import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
+import ManagerAbsenceOverview from "./pages/ManagerAbsenceOverview.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
       {
         path: "/afwezigheden",
         Component: AbsenceOverview,
+      },
+      {
+        // route voor manager weergave voor demo
+        path: "/manager/afwezigheden",
+        Component: ManagerAbsenceOverview,
       },
       {
         path: "/dashboard",
