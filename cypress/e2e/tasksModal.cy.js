@@ -18,21 +18,21 @@ describe('Show modal of and update task', () => {
   });
 
   it("should show a modal to complete a task", () => {
-    cy.get('[data-cy=complete_button]').first().click();
+    cy.get('[data-cy=complete_button]').eq(1).click();
     cy.get('[data-cy=task_modal]').should('exist');
     cy.get('[data-cy=task_modal_title]').should('have.text', 'Markeer taak als afgewerkt');
     cy.get('[data-cy=task_complete_input]').should('exist');
   })
 
   it("should show task as completed", () => {
-    cy.get('[data-cy=complete_button]').first().click();
+    cy.get('[data-cy=complete_button]').eq(1).click();
     cy.get('[data-cy=task_complete_input]').type('50');
     cy.get('[data-cy=task_complete_bevestig_button]').click();
     cy.get('[data-cy=complete_button]').should('have.text', 'x')
   })
 
   it("should show task as uncompleted", () => {
-    cy.get('[data-cy=complete_button]').first().click();
+    cy.get('[data-cy=complete_button]').eq(1).click();
     cy.get('[data-cy=task_modal]').should('exist');
     cy.get('[data-cy=task_complete_input]').type('50');
     cy.get('[data-cy=task_complete_bevestig_button]').click();
@@ -43,7 +43,7 @@ describe('Show modal of and update task', () => {
   })
 
   it("should not show task as uncompleted", () => {
-    cy.get('[data-cy=complete_button]').first().click();
+    cy.get('[data-cy=complete_button]').eq(1).click();
     cy.get('[data-cy=task_modal]').should('exist');
     cy.get('[data-cy=task_complete_input]').type('50');
     cy.get('[data-cy=task_complete_bevestig_button]').click();

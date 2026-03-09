@@ -36,9 +36,9 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
 
   if (type === "complete") {
     if (!validate()) return;
-    onSubmit({ ...task, duurtijd: Number(amountMinutes), status: "Afgewerkt" });
+    onSubmit({ ...task, status: "Afgewerkt" });
   } else if (type === "cancel") {
-    onSubmit({ ...task, duurtijd: "", status: "cancelled" });
+    onSubmit({ ...task, status: "Gepland" });
   }
 
   onClose();
