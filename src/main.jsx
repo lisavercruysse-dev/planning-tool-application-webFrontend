@@ -11,11 +11,18 @@ import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
 import ManagerAbsenceOverview from "./pages/ManagerAbsenceOverview.jsx";
+import { AuthProvider } from "./contexts/Auth.context.jsx";
+import Logout from "./pages/Logout.jsx";
+
 
 const router = createBrowserRouter([
   {
     path: "/login",
     Component: Login,
+  },
+  {
+    path: "/logout",
+    Component: Logout,
   },
   {
     Component: Layout,
@@ -51,8 +58,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* <AuthProvider> */}
-    <RouterProvider router={router} />
-    {/* </AuthProvider> */}
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider> 
   </StrictMode>,
 );

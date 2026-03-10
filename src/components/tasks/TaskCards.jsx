@@ -2,7 +2,7 @@ import { FiSearch } from "react-icons/fi";
 import TaskCard from "./TaskCard";
 import img from "../../assets/boxlogo.png";
 
-export function TaskCards({ tasks, searchQuery, setSearchQuery }) {
+export function TaskCards({ tasks, searchQuery, setSearchQuery, onTaskDetailsClick, onCompleted, onCancel }) {
   return (
     <div className="border border-gray-200 rounded-[10px] flex flex-col w-full">
       <div className="border-b border-gray-200">
@@ -31,7 +31,7 @@ export function TaskCards({ tasks, searchQuery, setSearchQuery }) {
 
       <div className="divide-y divide-gray-200">
         {tasks.length ? (
-          tasks.map((t) => <TaskCard key={t.id} {...t} />)
+          tasks.map((t) => <TaskCard key={t.id} {...t} onDetailsClick={() => onTaskDetailsClick(t)} onCompleted={() => onCompleted(t)} onCancel={() => onCancel(t)}/>)
         ) : (
           <div className="w-full flex flex-col items-center justify-center mt-10 mb-20">
             <img src={img} alt="niks gevonden" className="max-w-xs" data-cy="empty" />

@@ -1,21 +1,16 @@
 export function DatePicker({ selectedDate, setSelectedDate }) {
   return (
-    <div className="flex items-center gap-4">
-      <label
-        htmlFor="date-picker"
-        className="text-sm font-medium text-gray-700"
-      >
-        Kies datum:
-      </label>
-      <div className="relative">
+    <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm min-w-[170px]">
+      
         <input
           id="date-picker"
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="border border-gray-200 rounded-md px-3 py-1.5 text-sm outline-none focus:border-gray-400 min-w-[150px]"
+          className="bg-transparent text-sm 
+            outline-none cursor-pointer min-w-[110px]"
         />
-      </div>
+      
     </div>
   );
 }
