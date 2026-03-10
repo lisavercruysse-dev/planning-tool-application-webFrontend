@@ -7,8 +7,16 @@ export default function ConfirmModal({
   onConfirm,
   title,
   message,
+  confirmText = "Ja, annuleren",
+  cancelText = "Nee, behouden",
+  confirmColor = "red",
 }) {
   if (!isOpen) return null;
+
+  const confirmColorClass =
+    confirmColor === "blue"
+      ? "bg-[#4863d6] hover:bg-[#3c52b3]"
+      : "bg-[#b64949] hover:bg-[#9d3f3f]";
 
   return (
     <div
@@ -34,13 +42,13 @@ export default function ConfirmModal({
             onClick={onClose}
             className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors"
           >
-            Nee, behouden
+            {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-[#b64949] text-white rounded-md text-sm font-medium hover:bg-[#9d3f3f] transition-colors"
+            className={`px-4 py-2 text-white rounded-md text-sm font-medium transition-colors ${confirmColorClass}`}
           >
-            Ja, annuleren
+            {confirmText}
           </button>
         </div>
       </div>
