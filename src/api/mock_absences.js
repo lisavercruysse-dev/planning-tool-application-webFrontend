@@ -17,7 +17,7 @@ export const mockAfwezigheden = [
     endDate: "Nov 12, 2025",
     days: "3 dagen",
     type: "Ziekte",
-    status: "In behandeling",
+    status: "Goedgekeurd",
     reason: "Zware griep en hoge koorts",
     canCancel: false,
   },
