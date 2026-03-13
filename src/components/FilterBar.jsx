@@ -5,12 +5,14 @@ import { useAuth } from "../contexts/auth";
 export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selectedDate, setSelectedDate }) {
 
   const { user } = useAuth();
-  const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
+  const isManager = user?.jobTitel === "manager";
+  const isVerantwoordelijke = user?.jobTitel === "verantwoordelijke";
+  const isManagerOrVerantwoordelijke = isManager || isVerantwoordelijke;
 
   return (
     <div className="flex flex-wrap items-center gap-3 mb-5">
       {/* Plant filter */}
-      {isManagerOrVerantwoordelijke && (
+      {isManager && (
       <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm">
         <FiFilter className="text-gray-400 text-xs" />
         <select
@@ -19,7 +21,9 @@ export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selecte
           className="text-sm text-gray-700 bg-transparent outline-none cursor-pointer"
         >
           {plants.map((p) => (
-            <option key={p}>{p}</option>
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
           ))}
         </select>
       </div>
@@ -35,7 +39,9 @@ export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selecte
           className="text-sm text-gray-700 bg-transparent outline-none cursor-pointer"
         >
           {teams.map((t) => (
-            <option key={t}>{t}</option>
+            <option key={t.id} value={t.id}>
+              {t.name}
+            </option>
           ))}
         </select>
       </div>

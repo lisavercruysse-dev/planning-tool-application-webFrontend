@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { TASK_DATA, PLANTS, TEAMS, USER_DATA } from "../api/mock_data";
 import { TaskList }  from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
@@ -7,29 +7,43 @@ import { FilterBar } from "../components/FilterBar";
 import { MemberRow } from "../components/tasks/MemberRow";
 import { TimeLineLegend } from "../components/tasks/TimeLineLegend.jsx";
 import { useAuth } from "../contexts/auth";
+import { TimelineHourLabels } from "../components/tasks/TimelineHourLabels";
+
+const teamsForPlant = (plantId) => {
+  console.log("plantId type:", typeof plantId, "value:", plantId);
+  console.log("teams:", TEAMS.filter((t) => t.plantId === plantId));
+  return TEAMS.filter((t) => t.plantId === Number(plantId));
+};
 
 export default function Planning() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [selectedPlant, setSelectedPlant] = useState(PLANTS[0]);
-  const [selectedTeam,  setSelectedTeam]  = useState(TEAMS[PLANTS[0]][0]);
-  const [modelType, setModelType] = useState("");
-  const [tasks, setTasks] = useState(TASK_DATA);
-
   const { user } = useAuth();
   const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
   const isWerknemer = user?.jobTitel === "werknemer";
+  const isVerantwoordelijke = user?.jobTitel === "verantwoordelijke";
+  
+  const getDefaultPlantId = () => {
+    const plantId = isVerantwoordelijke ? Number(user?.plantId) : PLANTS[0].id;
+    return isNaN(plantId) ? PLANTS[0].id : plantId;
+  };
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedPlant, setSelectedPlant] = useState(getDefaultPlantId);
+  const [selectedTeam,  setSelectedTeam]  = useState(teamsForPlant(getDefaultPlantId)[0]?.id ?? null);
+  const [modelType, setModelType] = useState("");
+  const [tasks, setTasks] = useState(TASK_DATA);
 
   // Update team when plant changes
-  function handlePlantChange(p) {
-    setSelectedPlant(p);
-    setSelectedTeam(TEAMS[p][0]);
+  function handlePlantChange(plantId) {
+    const id = Number(plantId);
+    setSelectedPlant(id);
+    setSelectedTeam(teamsForPlant(id)[0]?.id ?? "");
   }
 
   // Filtered members
   const filteredMembers = useMemo(
-    () => USER_DATA.filter((m) => m.plant === selectedPlant && m.team === selectedTeam),
+    () => USER_DATA.filter((m) => m.plantId === selectedPlant && m.teamIds?.includes(selectedTeam)),
     [selectedPlant, selectedTeam]
   );
 
@@ -63,10 +77,10 @@ export default function Planning() {
 
       const taskDate = task.startdatum.split("T")[0];
       const matchesDate = selectedDate ? taskDate === selectedDate : true;
-
-      return matchesSearch && matchesDate;
+      const matchesMember = isWerknemer ? task.memberId === user.id : true;
+      return matchesSearch && matchesDate && matchesMember;
     });
-  }, [searchQuery, selectedDate, tasks]);
+  }, [searchQuery, selectedDate, tasks, user.id, isWerknemer]);
 
   return (
     <div className="mx-16 mt-8">
@@ -76,9 +90,9 @@ export default function Planning() {
         plants={PLANTS}
         plant={selectedPlant}
         onPlant={handlePlantChange}
-        teams={TEAMS[selectedPlant]}
+        teams={teamsForPlant(selectedPlant)}
         team={selectedTeam}
-        onTeam={setSelectedTeam}
+        onTeam={(id) => setSelectedTeam(Number(id))}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
@@ -90,6 +104,7 @@ export default function Planning() {
       )}
 
       {/* Member rows */}
+      <TimelineHourLabels />
       {isManagerOrVerantwoordelijke && (
       <div className="divide-y divide-gray-100">
         {filteredMembers.length === 0 ? (
