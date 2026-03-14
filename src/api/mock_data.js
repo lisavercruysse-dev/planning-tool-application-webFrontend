@@ -75,76 +75,110 @@ const USER_DATA = [
     firstName: 'Jonas',
     lastName: 'Van Aert',
     email: 'Jonas.VanAert@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team A"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [1, 2]
   },
   {
     id: 2,
     firstName: 'Jan',
     lastName: 'Jansens',
     email: 'Jan.Jansens@example.com',
-    jobtitel: 'manager',
+    jobTitel: 'manager',
   },
   {
     id: 3,
     firstName: 'Pieter',
     lastName: 'De Bakker',
     email: 'Pieter.DeBakker@example.com',
-    jobtitel: 'verantwoordelijke',
+    jobTitel: 'verantwoordelijke',
+    plantId: 1,
   },
   {
     id: 4,
     firstName: 'Marie',
     lastName: 'Vermeulen',
     email: 'Marie.Vermeulen@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team A"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [1]
   },
   {
     id: 5,
     firstName: 'Sophie',
     lastName: 'Peeters',
     email: 'Sophie.Peeters@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team A"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [1]
   },
   {
     id: 6,
     firstName: 'Tom',
     lastName: 'Claes',
     email: 'Tom.Claes@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team B"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [2]
   },
   {
     id: 7,
     firstName: 'Lisa',
     lastName: 'Willems',
     email: 'Lisa.Willems@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team B"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [2]
   },
   {
     id: 8,
     firstName: 'Kevin',
     lastName: 'Janssens',
     email: 'Kevin.Janssens@example.com',
-    jobtitel: 'werknemer',
-    plant: "Plant A", 
-    team: "Team B"
+    jobTitel: 'werknemer',
+    plantId: 1,
+    teamIds: [2]
   }
 ];
 
-const PLANTS = ["Plant A", "Plant B"];
+const PLANTS = [
+  { 
+    id: 1,
+    name: "Plant A", 
+    location: "Eindhoven, Nederland", 
+    lat: 51.44, 
+    lng: 5.47
+  },
+  { 
+    id: 2,
+    name: "Plant B", 
+    location: "Groningen, Nederland", 
+    lat: 53.22, 
+    lng: 6.56 
+  }
+];
 
-const TEAMS = {
-  "Plant A": ["Team A", "Team B"],
-  "Plant B": ["Team C", "Team D"],
-};
+const TEAMS = [
+  {
+    id: 1,
+    name: "Team A",
+    plantId: 1
+  },
+  {
+    id: 2,
+    name: "Team B",
+    plantId: 1
+  },
+  {
+    id: 3,
+    name: "Team C",
+    plantId: 2
+  },
+  {
+    id: 4,
+    name: "Team D",
+    plantId: 2
+  }
+];
 
 export { TASK_DATA, USER_DATA, PLANTS, TEAMS };
