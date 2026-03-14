@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, MapPin, Users } from "lucide-react";
+import { Search, MapPin, Users, Package  } from "lucide-react";
 import { PLANTS } from "../../api/mock_data";
 
 const statusStyles = {
@@ -16,7 +16,7 @@ const healthStyles = {
 export default function DashManager() {
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);
-  const [selectedSite, setSelectedSite] = useState(PLANTS[0]);
+  const [selectedSite, setSelectedSite] = useState(null);
   const [search, setSearch] = useState("");
  
   const filteredSites = PLANTS.filter(
@@ -107,7 +107,7 @@ export default function DashManager() {
         </div>
  
         {/* Sites panel */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden h-120">
           <div className="p-4 pb-3 shrink-0">
             <h2 className="font-bold text-gray-900 text-base mb-3">Sites</h2>
             <div className="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-gray-50">
@@ -176,7 +176,24 @@ export default function DashManager() {
       </div>
  
       {/* Placeholder for charts / KPIs */}
-      <div className="bg-white rounded-xl border border-dashed border-gray-300 h-82" />
+<div className="bg-white rounded-xl border border-gray-200 shadow-sm h-82 flex items-center justify-center">
+  {!selectedSite ? (
+    <div className="flex flex-col items-center gap-3 text-center">
+      {/* Dozen icoon */}
+      <Package size={64} className="text-gray-300" strokeWidth={1.5} />
+
+      <div>
+        <p className="text-lg font-medium text-gray-700">Selecteer een site</p>
+        <p className="text-sm text-gray-400 mt-1 max-w-xs">
+          Selecteer een site op de kaart of in het menu om een dashboard met meer info te zien te krijgen.
+        </p>
+      </div>
+    </div>
+  ) : (
+    // TODO KPI's / charts voor de geselecteerde site
+    null
+  )}
+</div>
     </div>
   );
 }
