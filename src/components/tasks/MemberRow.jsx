@@ -39,7 +39,7 @@ export function MemberRow({ member, tasks, onEdit, onDelete }) {
 
         {/* Task blocks */}
         {tasks.map((task) => (
-          <TaskBlock key={task.id} task={task} onEdit={onEdit} onDelete={onDelete} />
+          <TaskBlock key={task.id} task={task} onEdit={onEdit} onDelete={onDelete}/>
         ))}
       </div>
     </div>

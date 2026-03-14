@@ -2,7 +2,6 @@
 import { useMemo } from "react";
 import { TimelineHourLabels } from "./TimelineHourLabels";
 import { TOTAL_HOURS } from './TimelineConfig.js';
-import { TimeLineLegend } from "./TimeLineLegend.jsx";
 import { TaskBlock } from "./TaskBlock.jsx";
 
 
@@ -10,7 +9,7 @@ function toDateInputValue(date) {
   return date.toISOString().split("T")[0];
 }
 
-export function PlanningTimeline({ tasks, selectedDate }) {
+export function PlanningTimeline({ tasks, selectedDate, onEdit }) {
   const dayTasks = useMemo(() => {
     return tasks.filter((task) => {
       const taskDate = new Date(task.startdatum);
@@ -62,7 +61,7 @@ export function PlanningTimeline({ tasks, selectedDate }) {
 
             {/* Task blocks */}
             {dayTasks.map((task) => (
-              <TaskBlock key={task.id} task={task}  />
+              <TaskBlock key={task.id} task={task} />
             ))}
 
           </div>

@@ -1,6 +1,6 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { TASK_DATA, PLANTS, TEAMS, USER_DATA } from "../api/mock_data";
-import { TaskList }  from '../components/tasks/TaskList';
+import { TaskList } from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
 import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
 import { FilterBar } from "../components/FilterBar";
@@ -8,6 +8,7 @@ import { MemberRow } from "../components/tasks/MemberRow";
 import { TimeLineLegend } from "../components/tasks/TimeLineLegend.jsx";
 import { useAuth } from "../contexts/auth";
 import { TimelineHourLabels } from "../components/tasks/TimelineHourLabels";
+import EditTimeBlockModal from "../components/tasks/EditTimeBlockModal.jsx";
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -33,6 +34,7 @@ export default function Planning() {
   const [selectedTeam,  setSelectedTeam]  = useState(teamsForPlant(getDefaultPlantId)[0]?.id ?? null);
   const [modelType, setModelType] = useState("");
   const [tasks, setTasks] = useState(TASK_DATA);
+  const [selectedTaskBlock, setSelectedTaskBlock] = useState(null);
 
   // Update team when plant changes
   function handlePlantChange(plantId) {
@@ -69,6 +71,14 @@ export default function Planning() {
     setModelType("");
   }
 
+  const showEditTimeBlockModal = (task) => {
+    setSelectedTaskBlock(task);
+  }
+ 
+  const closeEditTimeBlockModal = () => {
+    setSelectedTaskBlock(null);
+  }
+
   const filteredTasks = useMemo(() => {
      return tasks.filter((task) => {
       const matchesSearch = task.omschrijving
@@ -100,7 +110,7 @@ export default function Planning() {
 
       {/* Timeline werknemer */}
       {isWerknemer && (
-        <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate} />
+        <PlanningTimeline tasks={filteredTasks} selectedDate={selectedDate}/>
       )}
 
       {/* Member rows */}
@@ -117,7 +127,7 @@ export default function Planning() {
               key={member.id}
               member={member}
               tasks={memberTasks(member.id)}
-
+              onEdit={(task) => showEditTimeBlockModal(task)}
             /> // onEdit en onDelete nog toevoegen
           ))
         )}
@@ -140,6 +150,13 @@ export default function Planning() {
         type={modelType}
         onSubmit={handleSubmitTask}
         onCancel={handleSubmitTask}
+      />
+
+      <EditTimeBlockModal
+        isOpen={!!selectedTaskBlock}
+        onClose={closeEditTimeBlockModal}
+        task={selectedTaskBlock}
+        werknemers={filteredMembers}
       />
     </div>
   );

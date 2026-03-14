@@ -181,4 +181,11 @@ const TEAMS = [
   }
 ];
 
-export { TASK_DATA, USER_DATA, PLANTS, TEAMS };
+const MACHINE_DATA = [
+  {
+    id: 1,
+    name: "MC-PLT-001"
+  }
+]
+
+export { TASK_DATA, USER_DATA, PLANTS, TEAMS, MACHINE_DATA };
