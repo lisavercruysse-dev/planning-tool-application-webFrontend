@@ -56,6 +56,7 @@ export function TaskBlock({ task, onEdit, onDelete }) {
           onClick={(e) => { e.stopPropagation(); onEdit(task); }}
           className={`rounded p-0.5 ${colorClass}`}
           title="Bewerken"
+          data-cy="editTaskButton"
         >
           <FiEdit2 size={11} />
         </button>

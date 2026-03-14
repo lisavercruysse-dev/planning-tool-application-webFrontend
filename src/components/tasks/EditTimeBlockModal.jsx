@@ -18,7 +18,7 @@ export default function EditTimeBlockModal({isOpen, onClose, werknemers, task}) 
           >
             <X className="w-5 h-5" />
           </button>
-          <h2 className="text-xl font-semibold text-gray-800">Taak Wijzigen</h2>
+          <h2 className="text-xl font-semibold text-gray-800" data-cy="taakWijzigenTitel">Taak Wijzigen</h2>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-gray-400 mx-8 mt-3">

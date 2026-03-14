@@ -18,6 +18,11 @@ const teamsForPlant = (plantId) => {
 
 export default function Planning() {
   const { user } = useAuth();
+
+  if (!user) {
+  return null;
+}
+
   const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
   const isWerknemer = user?.jobTitel === "werknemer";
   const isVerantwoordelijke = user?.jobTitel === "verantwoordelijke";
