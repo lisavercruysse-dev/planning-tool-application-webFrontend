@@ -188,4 +188,61 @@ const MACHINE_DATA = [
   }
 ]
 
-export { TASK_DATA, USER_DATA, PLANTS, TEAMS, MACHINE_DATA };
+const TASK_TEMPLATE_DATA = [
+  {
+    id: 1,
+    omschrijving: "Onderhoud machine",
+    minuten: 60,
+    type: "onderhoud",
+  },
+  {
+    id: 2,
+    omschrijving: "Herstellen machine",
+    minuten: 180,
+    type: "reparatie",
+  },
+    {
+    id: 3,
+    omschrijving: "Inspectie machine",
+    minuten: 30,
+    type: "inspectie",
+  },
+  {
+    id: 4,
+    omschrijving: "Schoonmaken machine",
+    minuten: 45,
+    type: "onderhoud",
+  },
+  {
+    id: 5,
+    omschrijving: "Onderdelen vervangen",
+    minuten: 120,
+    type: "reparatie",
+  },
+  {
+    id: 6,
+    omschrijving: "Kalibratie machine",
+    minuten: 90,
+    type: "onderhoud",
+  },
+  {
+    id: 7,
+    omschrijving: "Storingsanalyse",
+    minuten: 60,
+    type: "inspectie",
+  },
+  {
+    id: 8,
+    omschrijving: "Veiligheidscontrole",
+    minuten: 20,
+    type: "inspectie",
+  },
+  {
+    id: 9,
+    omschrijving: "Productie goederen",
+    minuten: 240,
+    type: "productie"
+  }
+]
+
+export { TASK_DATA, USER_DATA, PLANTS, TEAMS, MACHINE_DATA, TASK_TEMPLATE_DATA };
