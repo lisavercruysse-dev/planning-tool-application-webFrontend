@@ -17,17 +17,17 @@ export default function TaskTemplate({ taskTemplate }) {
   return (
     <div className="grid grid-cols-[2fr_1fr_1fr_200px] items-center py-3 border-b border-[#F5F5F5] text-sm">
 
-      <p className="truncate min-w-50">
+      <p data-cy="taskTemplateOmschrijving" className="truncate min-w-50">
         {taskTemplate.omschrijving}
       </p>
 
-      <p className="min-w-50">
+      <p data-cy="taskTemplateMinuten" className="min-w-50">
         {taskTemplate.minuten} min
       </p>
 
       {/* colored type badge */}
       <div className="min-w-50">
-        <span
+        <span data-cy="taskTemplateType"
           className={`px-2 py-1 rounded-sm text-xs font-medium ${getColorClass(
             taskTemplate.type[0]
           )}`}
@@ -36,7 +36,7 @@ export default function TaskTemplate({ taskTemplate }) {
         </span>
       </div>
 
-      <div className="flex justify-end min-w-50">
+      <div data-cy="taskTemplateToewijzen" className="flex justify-end min-w-50">
         <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer">
           Toewijzen
         </button>
