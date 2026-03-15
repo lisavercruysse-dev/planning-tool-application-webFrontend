@@ -9,6 +9,7 @@ import { TimeLineLegend } from "../components/tasks/TimeLineLegend.jsx";
 import { useAuth } from "../contexts/auth";
 import { TimelineHourLabels } from "../components/tasks/TimelineHourLabels";
 import EditTimeBlockModal from "../components/tasks/EditTimeBlockModal.jsx";
+import DeleteTaskModal from "../components/tasks/DeleteTaskModal.jsx";
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -35,6 +36,7 @@ export default function Planning() {
   const [modelType, setModelType] = useState("");
   const [tasks, setTasks] = useState(TASK_DATA);
   const [selectedTaskBlock, setSelectedTaskBlock] = useState(null);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   // Update team when plant changes
   function handlePlantChange(plantId) {
@@ -78,6 +80,17 @@ export default function Planning() {
   const closeEditTimeBlockModal = () => {
     setSelectedTaskBlock(null);
   }
+
+  const showDeleteTaskModal = (task) => {
+    setTaskToDelete(task);
+  }
+  const closeDeleteTaskModal = () => {
+    setTaskToDelete(null)
+  }
+  const handleDeleteTask = (taskId) => {
+  setTasks((prevTasks) => prevTasks.filter((t) => t.id !== taskId));
+  closeDeleteTaskModal();
+  };
 
   const filteredTasks = useMemo(() => {
      return tasks.filter((task) => {
@@ -128,6 +141,7 @@ export default function Planning() {
               member={member}
               tasks={memberTasks(member.id)}
               onEdit={(task) => showEditTimeBlockModal(task)}
+              onDelete={(task) => showDeleteTaskModal(task)}
             /> // onEdit en onDelete nog toevoegen
           ))
         )}
@@ -157,6 +171,13 @@ export default function Planning() {
         onClose={closeEditTimeBlockModal}
         task={selectedTaskBlock}
         werknemers={filteredMembers}
+      />
+
+      <DeleteTaskModal
+        isOpen = {!!taskToDelete}
+        onClose = {closeDeleteTaskModal}
+        task = {taskToDelete}
+        onDelete = {handleDeleteTask}
       />
     </div>
   );
