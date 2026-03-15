@@ -37,7 +37,7 @@ export default function TaskTemplate({ taskTemplate }) {
       </div>
 
       <div className="flex justify-end min-w-50">
-        <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50">
+        <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer">
           Toewijzen
         </button>
       </div>
