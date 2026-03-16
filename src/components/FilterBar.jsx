@@ -34,6 +34,7 @@ export function FilterBar({ plants, plant, onPlant, teams, team, onTeam, selecte
       <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm">
         <FiFilter className="text-gray-400 text-xs" />
         <select
+          data-cy="teamSelector"
           value={team}
           onChange={(e) => onTeam(e.target.value)}
           className="text-sm text-gray-700 bg-transparent outline-none cursor-pointer"
