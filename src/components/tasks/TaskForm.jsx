@@ -72,6 +72,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
             Werknemer
           </label>
           <select className="bg-[#F3F3F5] p-2 rounded-lg"
+          data-cy='taakBewerkenWerknemer'
           {...register('werknemer', validationRules.werknemer)}
           >
             {werknemers.map((w) => 
@@ -104,6 +105,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
           <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white min-w-42.5">
               <input type="date" className="bg-transparent text-sm
             outline-none cursor-pointer min-w-27.5"
+            data-cy="taakBewerkenDatum"
             {...register('datum', validationRules.datum)}/>
             {errors.datum && <p className="text-red-500 text-sm mt-1">{errors.datum.message}</p> }
           </div>
@@ -116,6 +118,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
           {...register('starttijd', validationRules.starttijd)}
             type="time"
             className="bg-[#F3F3F5] rounded-lg p-2"
+            data-cy="taakBewerkenStarttijd"
           />
           {errors.starttijd && <p className="text-red-500 text-sm mt-1">{errors.starttijd.message}</p> }
         </div>
@@ -127,6 +130,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
           {...register('eindtijd', validationRules.eindtijd)}
             type="time"
             className="bg-[#F3F3F5] rounded-lg p-2"
+            data-cy="taakBewerkenEindtijd"
           />
           {errors.eindtijd && <p className="text-red-500 text-sm mt-1">{errors.eindtijd.message}</p> }
         </div>
@@ -136,6 +140,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
           </label>
           <textarea
           {...register('specificaties', validationRules.specificaties)}
+            data-cy="taakBewerkenSpecificaties"
             className="min-h-25 p-3 border border-[#e4e4e4] rounded-lg text-sm resize-y focus:outline-none"
           />
           {errors.specificaties && <p className="text-red-500 text-sm mt-1">{errors.specificaties.message}</p> }

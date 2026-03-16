@@ -1,6 +1,6 @@
 describe('Show modal of and update task', () => {
   beforeEach(() => {
-    cy.login("user@example.com", "12345678");
+    cy.login("Pieter.DeBakker@example.com", "12345678");
     cy.visit("http://localhost:5173/planning");
   });
 

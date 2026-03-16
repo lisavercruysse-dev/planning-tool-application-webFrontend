@@ -3,6 +3,7 @@ export function DatePicker({ selectedDate, setSelectedDate }) {
     <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 bg-white shadow-sm min-w-[170px]">
       
         <input
+          data-cy="dateSelector"
           id="date-picker"
           type="date"
           value={selectedDate}

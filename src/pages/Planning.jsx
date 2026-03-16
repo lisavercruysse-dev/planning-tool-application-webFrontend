@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { TASK_DATA, PLANTS, TEAMS, USER_DATA } from "../api/mock_data";
+import { TASK_DATA, PLANTS, TEAMS, USER_DATA, TASK_TEMPLATE_DATA } from "../api/mock_data";
 import { TaskList } from '../components/tasks/TaskList';
 import { PlanningTimeline } from "../components/tasks/PlanningTimeline";
 import TaskDetailsModal from '../components/tasks/TaskDetailsModal';
@@ -10,6 +10,7 @@ import { useAuth } from "../contexts/auth";
 import { TimelineHourLabels } from "../components/tasks/TimelineHourLabels";
 import EditTimeBlockModal from "../components/tasks/EditTimeBlockModal.jsx";
 import DeleteTaskModal from "../components/tasks/DeleteTaskModal.jsx";
+import TaskTemplateList from "../components/taskTemplates/TaskTemplateList.jsx";
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -19,6 +20,11 @@ const teamsForPlant = (plantId) => {
 
 export default function Planning() {
   const { user } = useAuth();
+
+  if (!user) {
+  return null;
+}
+
   const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
   const isWerknemer = user?.jobTitel === "werknemer";
   const isVerantwoordelijke = user?.jobTitel === "verantwoordelijke";
@@ -76,7 +82,6 @@ export default function Planning() {
   const showEditTimeBlockModal = (task) => {
     setSelectedTaskBlock(task);
   }
- 
   const closeEditTimeBlockModal = () => {
     setSelectedTaskBlock(null);
   }
@@ -148,7 +153,8 @@ export default function Planning() {
       </div>
       )}
 
-      <TaskList 
+      {isWerknemer &&    
+      <TaskList
         tasks={filteredTasks}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -156,6 +162,11 @@ export default function Planning() {
         onCompleted={(task) => showModal(task, "complete")}
         onCancel={(task) => showModal(task, "cancel")}
       />
+      }
+
+      {isManagerOrVerantwoordelijke &&
+        <TaskTemplateList taskTemplates={TASK_TEMPLATE_DATA}/>
+      }
 
       <TaskDetailsModal 
         isOpen={!!selectedTask}
