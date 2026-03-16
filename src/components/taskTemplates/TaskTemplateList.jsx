@@ -20,12 +20,12 @@ export default function TaskTemplateList({ taskTemplates }) {
     <div className="w-full text-gray-800">
       <p className="text-xl p-4 md:text-2xl font-bold">Taak templates</p>
       <div className="grid grid-cols-[2fr_1fr_1fr_200px] items-center py-3 border-y border-gray-200 text-sm font-medium">
-        <p className="font-bold min-w-50">omschrijving</p>
-        <p className="font-bold min-w-50">geschatte tijd</p>
-        <p className="font-bold min-w-50">type</p>
+        <p data-cy="taskTemplateOmschrijvingTitel" className="font-bold min-w-50">omschrijving</p>
+        <p data-cy="taskTemplateMinutenTitel" className="font-bold min-w-50">geschatte tijd</p>
+        <p data-cy="taskTemplateTypeTitel" className="font-bold min-w-50">type</p>
 
         <div className="flex gap-3 justify-end">
-          <input
+          <input data-cy="taskTemplateSearch"
             type="text"
             placeholder="omschrijving"
             value={searchQuery}
@@ -41,7 +41,7 @@ export default function TaskTemplateList({ taskTemplates }) {
       </div>
 
       {filteredTemplates.map((task) => (
-        <TaskTemplate key={task.id} taskTemplate={task} />
+        <TaskTemplate data-cy="taskTemplateItem" key={task.id} taskTemplate={task} />
       ))}
     </div>
   );
