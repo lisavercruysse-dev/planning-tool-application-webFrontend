@@ -165,7 +165,7 @@ export default function Planning() {
       }
 
       {isManagerOrVerantwoordelijke &&
-        <TaskTemplateList taskTemplates={TASK_TEMPLATE_DATA}/>
+        <TaskTemplateList taskTemplates={TASK_TEMPLATE_DATA} onAssign={showEditTimeBlockModal}/>
       }
 
       <TaskDetailsModal 

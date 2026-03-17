@@ -13,7 +13,7 @@ function getColorClass(letter) {
   return colors[index];
 }
 
-export default function TaskTemplate({ taskTemplate }) {
+export default function TaskTemplate({ taskTemplate, onAssign }) {
   return (
     <div className="grid grid-cols-[2fr_1fr_1fr_200px] items-center py-3 border-b border-[#F5F5F5] text-sm">
 
@@ -37,7 +37,9 @@ export default function TaskTemplate({ taskTemplate }) {
       </div>
 
       <div data-cy="taskTemplateToewijzen" className="flex justify-end min-w-50">
-        <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer">
+        <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
+          onClick={() => onAssign(taskTemplate)}
+        >
           Toewijzen
         </button>
       </div>

@@ -26,9 +26,9 @@ import { MACHINE_DATA } from "../../api/mock_data";
     },
     eindtijd: {
       required: 'Er moet een eindtijd gekozen worden.',
-       validate: (value) => {
+      validate: (value, allValues) => {
         if (!value) return true; 
-        const starttijd = getValues('starttijd');
+        const starttijd = allValues.starttijd;
         if (value > "17:00") return 'Eindtijd mag niet later dan 17:00 zijn';
         if (starttijd && value < starttijd) return 'Eindtijd mag niet voor starttijd liggen';
         return true;
@@ -36,10 +36,13 @@ import { MACHINE_DATA } from "../../api/mock_data";
     },
     specificaties: {
       required: 'Er moeten meer specificaties gegeven worden.'
+    },
+    omschrijving: {
+      required: 'Er moet een omschrijving opgegeven worden.'
     }
   }
 
-export default function TaskForm({werknemers, task = EMPTY_TASK}) {
+export default function TaskForm({werknemers, task, onClose}) {
   const machines = MACHINE_DATA;
   const {register, handleSubmit, formState: {errors, isValid}, reset} = useForm({
     mode: 'onBlur',
@@ -55,18 +58,31 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
           return start.toTimeString().slice(0,5);
         })()
       : '',
-      specificaties: task?.specificaties
+      specificaties: task?.specificaties,
+      omschrijving: task?.omschrijving,
     }
   })
 
   const onSubmit = (values) => {
     if (!isValid) return;
     reset();
+    onClose();
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-5  mx-8">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="omschrijving">
+            Omschrijving
+          </label>
+          <input className="p-2 border border-[#e4e4e4] rounded-lg text-sm focus:outline-none"
+          type="text"
+          data-cy='taakBewerkenWerknemer'
+          {...register('omschrijving', validationRules.omschrijving)}
+          />
+          {errors.omschrijving && <p className="text-red-500 text-sm mt-1">{errors.omschrijving.message}</p> }
+        </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="werknemer">
             Werknemer
@@ -150,7 +166,7 @@ export default function TaskForm({werknemers, task = EMPTY_TASK}) {
         <button 
         type="submit"
         className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors">
-          Bewerken
+          {task?.memberId ? 'Bewerken' : 'Toewijzen'}
         </button>
       </div>
     </form>
