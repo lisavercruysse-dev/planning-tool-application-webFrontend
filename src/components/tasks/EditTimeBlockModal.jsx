@@ -24,7 +24,7 @@ export default function EditTimeBlockModal({isOpen, onClose, werknemers, task}) 
           <p className="text-gray-400 mx-8 mt-3">
             De werknemer zal hiervan op de hoogte gebracht worden.
           </p>
-          <TaskForm werknemers={werknemers} task={task}/>
+          <TaskForm werknemers={werknemers} task={task} onClose={onClose}/>
         </div>
       </div>
     </div>

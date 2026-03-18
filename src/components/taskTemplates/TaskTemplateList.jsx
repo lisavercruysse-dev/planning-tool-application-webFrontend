@@ -3,7 +3,7 @@ import { FiSearch } from "react-icons/fi";
 import TaskTemplate from "./TaskTemplate";
 import { useMemo } from "react";
 
-export default function TaskTemplateList({ taskTemplates }) {
+export default function TaskTemplateList({ taskTemplates, onAssign }) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTemplates = useMemo(() => {
@@ -41,7 +41,7 @@ export default function TaskTemplateList({ taskTemplates }) {
       </div>
 
       {filteredTemplates.map((task) => (
-        <TaskTemplate data-cy="taskTemplateItem" key={task.id} taskTemplate={task} />
+        <TaskTemplate data-cy="taskTemplateItem" key={task.id} taskTemplate={task} onAssign={onAssign} />
       ))}
     </div>
   );
