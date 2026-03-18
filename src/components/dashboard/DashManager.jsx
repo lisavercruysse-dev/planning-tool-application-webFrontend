@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, MapPin, Users, Package  } from "lucide-react";
-import { PLANTS } from "../../api/mock_data";
+import { Search, MapPin, Users, Package, Settings, Clock, CheckSquare } from "lucide-react";
+import { PLANTS, USER_DATA } from "../../api/mock_data";
 
 const statusStyles = {
   actief: "bg-green-100 text-green-700",
@@ -55,10 +55,12 @@ export default function DashManager() {
         zoom: 2,
         zoomControl: true,
         scrollWheelZoom: false,
+        maxBounds: [[-90, -180], [90, 180]], // voorkomt pannen buiten de wereldkaart
       });
  
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap",
+        noWrap: true, // voorkomt het herhalen van tiles
       }).addTo(map);
  
       leafletMapRef.current = map;
@@ -158,16 +160,13 @@ export default function DashManager() {
  
                   <div className="flex items-center gap-1.5 mb-1">
                     <Users size={13} className="text-gray-400" />
-                    <span className="text-xs text-gray-600"> {/* TODO: Implement worker count */}
-                      {/*  <span className="font-semibold">{site.workers.current}</span> / {site.workers.total}  */}
+                    <span className="text-xs text-gray-600"> {/* TODO: Implement available worker count */}
+                      <span className="font-semibold">
+                        {USER_DATA.filter((u) => u.plantId === site.id && u.jobTitel === "werknemer").length}
+                      </span>
                     </span>
-                    <span className="text-xs text-gray-400">Werknemers</span>
+                    <span className="text-xs text-gray-400">werknemers</span>
                   </div>
-                  
-                  {/* 
-                  <button className="bg-gray-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-700 transition-colors">
-                    Details
-                  </button>   //TODO: Mag dit weg?  */} 
                 </div>
               );
             })}
@@ -176,24 +175,90 @@ export default function DashManager() {
       </div>
  
       {/* Placeholder for charts / KPIs */}
-<div className="bg-white rounded-xl border border-gray-200 shadow-sm h-82 flex items-center justify-center">
-  {!selectedSite ? (
-    <div className="flex flex-col items-center gap-3 text-center">
-      {/* Dozen icoon */}
-      <Package size={64} className="text-gray-300" strokeWidth={1.5} />
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-82 flex items-center justify-center">
+        {!selectedSite ? (
+          <div className="flex flex-col items-center gap-3 text-center">
+            {/* Dozen icoon */}
+            <Package size={64} className="text-gray-300" strokeWidth={1.5} />
 
-      <div>
-        <p className="text-lg font-medium text-gray-700">Selecteer een site</p>
-        <p className="text-sm text-gray-400 mt-1 max-w-xs">
-          Selecteer een site op de kaart of in het menu om een dashboard met meer info te zien te krijgen.
-        </p>
+            <div>
+              <p className="text-lg font-medium text-gray-700">Selecteer een site</p>
+              <p className="text-sm text-gray-400 mt-1 max-w-xs">
+                Selecteer een site op de kaart of in het menu om een dashboard met meer info te zien te krijgen.
+              </p>
+            </div>
+          </div>
+        ) : (
+          // TODO KPI's / charts voor de geselecteerde site
+          <div className="w-full flex justify-start">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">
+
+              {/* Locatie */}
+              <div className="flex items-start gap-3">
+                <MapPin size={22} className="text-gray-400 mt-0.5 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="font-semibold text-gray-800 text-sm">{selectedSite.name}</p>
+                  <p className="text-xs text-gray-400">{selectedSite.location}</p>
+                </div>
+              </div>
+
+              {/* Werknemers */}
+              <div className="flex items-center gap-3">
+                <Users size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">
+                    <span className="font-normal text-gray-400">{selectedSite.totalWorkers ?? "—"}</span> {/* TODO */}
+                    <span> / {USER_DATA.filter((u) => u.plantId === selectedSite.id && u.jobTitel === "werknemer").length}</span>
+                    <span className="text-xs text-gray-400"> werknemers</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Status */}
+              <div className="flex items-start gap-3">
+                <Settings size={22} className="text-gray-400 mt-0.5 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Operationele status:{" "}
+                    <span className={`font-semibold ${selectedSite.status === "actief" ? "text-green-600" : "text-red-500"}`}>
+                      {selectedSite.status}
+                    </span>
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    Productiestatus:{" "}
+                    <span className={`font-semibold ${
+                      selectedSite.statusProductie === "Gezond" ? "text-green-600" :
+                      selectedSite.statusProductie === "Waarschuwing" ? "text-yellow-600" : "text-red-500"
+                    }`}>
+                      {selectedSite.statusProductie}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Gemiddelde taakduur */}
+              <div className="flex items-center gap-3">
+                <Clock size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-xs text-gray-400">Gemiddelde duur taak voltooien</p>
+                  <p className="text-sm font-semibold text-gray-800">{selectedSite.avgTaskMinutes ?? "—"} minuten</p>
+                </div>
+              </div>
+
+              {/* Voltooide taken vandaag */}
+              <div className="flex items-center gap-3">
+                <CheckSquare size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-xs text-gray-400">Aantal voltooide taken vandaag</p>
+                  <p className="text-sm font-semibold text-gray-800">{selectedSite.tasksCompletedToday ?? "—"}</p>
+                </div>
+              </div>
+
       </div>
     </div>
-  ) : (
-    // TODO KPI's / charts voor de geselecteerde site
-    null
-  )}
-</div>
+          
+        )}
+      </div>
     </div>
   );
 }
