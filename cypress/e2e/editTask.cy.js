@@ -7,7 +7,6 @@ describe('Edit task', () => {
   })
 
   it("should show a modal to edit a task", () => {
-
     cy.get('[data-cy=teamSelector]').select('Team B')
     cy.get('[data-cy=dateSelector]').type('2026-03-06')
     cy.get('[data-cy=editTaskButton]').first().click()
@@ -18,6 +17,18 @@ describe('Edit task', () => {
     cy.get('[data-cy=taakBewerkenEindtijd]').should('have.value', '12:00')
     cy.get('[data-cy=taakBewerkenSpecificaties]')
     .should('have.value', 'Diagnosticeer sensor E17, vervang defecte componenten en voer kalibratie uit om correcte werking te garanderen.')
+    cy.get('[data-cy=taakBewerkenSubmit]').should('have.text', 'Bewerken')
+  })
+
+  it("should show modal to assign a task", () => {
+    cy.get('[data-cy=taskTemplateToewijzen]').first().click()
+    cy.get('[data-cy=taakWijzigenTitel]').should('have.text', 'Taak Toewijzen')
+    cy.get('[data-cy=taakBewerkenDatum]').should('have.value', '')
+    cy.get('[data-cy=taakBewerkenStarttijd]').should('have.value', '')
+    cy.get('[data-cy=taakBewerkenEindtijd]').should('have.value', '')
+    cy.get('[data-cy=taakBewerkenSpecificaties]')
+    .should('have.value', '')
+    cy.get('[data-cy=taakBewerkenSubmit]').should('have.text', 'Toewijzen')
   })
 
 })

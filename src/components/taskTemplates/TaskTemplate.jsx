@@ -36,8 +36,8 @@ export default function TaskTemplate({ taskTemplate, onAssign }) {
         </span>
       </div>
 
-      <div data-cy="taskTemplateToewijzen" className="flex justify-end min-w-50">
-        <button className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
+      <div className="flex justify-end min-w-50">
+        <button data-cy="taskTemplateToewijzen" className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
           onClick={() => onAssign(taskTemplate)}
         >
           Toewijzen

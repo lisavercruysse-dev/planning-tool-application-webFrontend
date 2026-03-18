@@ -78,7 +78,7 @@ export default function TaskForm({werknemers, task, onClose}) {
           </label>
           <input className="p-2 border border-[#e4e4e4] rounded-lg text-sm focus:outline-none"
           type="text"
-          data-cy='taakBewerkenWerknemer'
+          data-cy='taakBewerkenOmschrijving'
           {...register('omschrijving', validationRules.omschrijving)}
           />
           {errors.omschrijving && <p className="text-red-500 text-sm mt-1">{errors.omschrijving.message}</p> }
@@ -164,6 +164,7 @@ export default function TaskForm({werknemers, task, onClose}) {
       </div>
       <div className="flex justify-end m-4 mx-8">
         <button 
+        data-cy="taakBewerkenSubmit"
         type="submit"
         className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors">
           {task?.memberId ? 'Bewerken' : 'Toewijzen'}
