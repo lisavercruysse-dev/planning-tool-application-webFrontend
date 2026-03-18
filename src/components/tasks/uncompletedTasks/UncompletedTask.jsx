@@ -29,7 +29,7 @@ export default function UncompletedTask ({task, onAssign}) {
       </p>
 
       <div className="min-w-50">
-        <span data-cy="taskTemplateType"
+        <span data-cy="unCompletedTaskType"
           className={`px-2 py-1 rounded-sm text-xs font-medium ${getColorClass(
             task.type[0]
           )}`}
@@ -39,7 +39,7 @@ export default function UncompletedTask ({task, onAssign}) {
       </div>
 
       <div className="flex justify-end min-w-50">
-        <button data-cy="taskTemplateToewijzen" className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
+        <button data-cy="unCompletedTaskToewijzen" className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
           onClick={() => onAssign(task)}
         >
           Opnieuw inplannen
