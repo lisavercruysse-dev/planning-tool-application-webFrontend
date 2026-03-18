@@ -31,4 +31,15 @@ describe('Edit task', () => {
     cy.get('[data-cy=taakBewerkenSubmit]').should('have.text', 'Toewijzen')
   })
 
+  it("should show a modal to assign a task", () => {
+    cy.get('[data-cy=unCompletedTaskToewijzen]').first().click()
+    cy.get('[data-cy=taakWijzigenTitel]').should('have.text', 'Taak Wijzigen')
+    cy.get('[data-cy=taakBewerkenWerknemer] option:selected').should('have.text', 'Jonas Van Aert')
+    cy.get('[data-cy=taakBewerkenDatum]').should('have.value', '2026-03-02')
+    cy.get('[data-cy=taakBewerkenStarttijd]').should('have.value', '09:00')
+    cy.get('[data-cy=taakBewerkenEindtijd]').should('have.value', '10:00')
+    cy.get('[data-cy=taakBewerkenSpecificaties]')
+    .should('have.value', 'Start en controleer assemblagelijn AL-07 en voer een korte testrun uit.')
+    cy.get('[data-cy=taakBewerkenSubmit]').should('have.text', 'Bewerken')
+  })
 })
