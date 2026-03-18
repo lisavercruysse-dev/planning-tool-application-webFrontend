@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, MapPin, Users, Package, Settings, Clock, CheckSquare } from "lucide-react";
+import { Search, MapPin, Users, User, Package, Settings, Clock, CheckSquare } from "lucide-react";
 import { PLANTS, USER_DATA } from "../../api/mock_data";
 
 const statusStyles = {
@@ -175,7 +175,7 @@ export default function DashManager() {
       </div>
  
       {/* Placeholder for charts / KPIs */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-82 flex items-center justify-center">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-100 flex items-center justify-center">
         {!selectedSite ? (
           <div className="flex flex-col items-center gap-3 text-center">
             {/* Dozen icoon */}
@@ -214,17 +214,31 @@ export default function DashManager() {
                 </div>
               </div>
 
+              {/* Verantwoordelijke */}
+              <div className="flex items-center gap-3">
+                <User size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-sm font-semibold text-gray-700">
+                    <span className="font-normal text-gray-400">Verantwoordelijke: </span><br></br>
+                    <span> {USER_DATA.filter((u) => u.plantId === selectedSite.id && u.jobTitel === "verantwoordelijke")
+                                    .map((user) => `${user.firstName} ${user.lastName}`)
+                                    .join(", ") || "Geen verantwoordelijke toegewezen"}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
               {/* Status */}
               <div className="flex items-start gap-3">
                 <Settings size={22} className="text-gray-400 mt-0.5 shrink-0" strokeWidth={1.5} />
                 <div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-400">
                     Operationele status:{" "}
                     <span className={`font-semibold ${selectedSite.status === "actief" ? "text-green-600" : "text-red-500"}`}>
                       {selectedSite.status}
                     </span>
                   </p>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-400">
                     Productiestatus:{" "}
                     <span className={`font-semibold ${
                       selectedSite.statusProductie === "Gezond" ? "text-green-600" :
