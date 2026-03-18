@@ -11,6 +11,7 @@ import { TimelineHourLabels } from "../components/tasks/TimelineHourLabels";
 import EditTimeBlockModal from "../components/tasks/EditTimeBlockModal.jsx";
 import DeleteTaskModal from "../components/tasks/DeleteTaskModal.jsx";
 import TaskTemplateList from "../components/taskTemplates/TaskTemplateList.jsx";
+import UncompletedTaskList from '../components/tasks/uncompletedTasks/UncompletedTaskList.jsx';
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -33,7 +34,7 @@ export default function Planning() {
     const plantId = isVerantwoordelijke ? Number(user?.plantId) : PLANTS[0].id;
     return isNaN(plantId) ? PLANTS[0].id : plantId;
   };
-
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
@@ -110,8 +111,13 @@ export default function Planning() {
     });
   }, [searchQuery, selectedDate, tasks, user.id, isWerknemer]);
 
+  const uncompletedTasks = tasks.filter(
+    (t) => new Date(t.startdatum) < new Date()
+  );
+
   return (
     <div className="mx-16 mt-8">
+      <p className="text-gray-800 text-xl p-4 md:text-2xl font-bold">Planning</p>
 
       {/* Filters */}
       <FilterBar
@@ -162,6 +168,10 @@ export default function Planning() {
         onCompleted={(task) => showModal(task, "complete")}
         onCancel={(task) => showModal(task, "cancel")}
       />
+      }
+
+      {isManagerOrVerantwoordelijke && 
+        <UncompletedTaskList tasks={uncompletedTasks} onAssign={showEditTimeBlockModal}/>
       }
 
       {isManagerOrVerantwoordelijke &&

@@ -13,36 +13,39 @@ function getColorClass(letter) {
   return colors[index];
 }
 
-export default function TaskTemplate({ taskTemplate, onAssign }) {
+export default function UncompletedTask ({task, onAssign}) {
   return (
-    <div className="grid grid-cols-[2fr_1fr_1fr_200px] items-center py-3 border-b border-[#F5F5F5] text-sm">
-
-      <p data-cy="taskTemplateOmschrijving" className="truncate min-w-50">
-        {taskTemplate.omschrijving}
+    <div className="grid grid-cols-[2fr_1fr_1fr_1fr_200px] items-center py-3 border-b border-[#F5F5F5] text-sm">
+      <p data-cy="uncompletedTaskOmschrijving" className="truncate min-w-50">
+        {task.omschrijving}
       </p>
 
-      <p data-cy="taskTemplateMinuten" className="min-w-50">
-        {taskTemplate.minuten} min
+      <p data-cy="uncompletedTaskMinuten" className="min-w-50">
+        {task.duurtijd} min
+      </p>
+
+      <p data-cy="uncompletedTaskMinuten" className="min-w-50">
+        {task.startdatum.split("T")[0]}
       </p>
 
       <div className="min-w-50">
         <span data-cy="taskTemplateType"
           className={`px-2 py-1 rounded-sm text-xs font-medium ${getColorClass(
-            taskTemplate.type[0]
+            task.type[0]
           )}`}
         >
-          {taskTemplate.type}
+          {task.type}
         </span>
       </div>
 
       <div className="flex justify-end min-w-50">
         <button data-cy="taskTemplateToewijzen" className="px-3 py-1 border border-[#E5E5E5] rounded-lg hover:bg-gray-50 cursor-pointer"
-          onClick={() => onAssign(taskTemplate)}
+          onClick={() => onAssign(task)}
         >
-          Toewijzen
+          Opnieuw inplannen
         </button>
       </div>
 
     </div>
-  );
+  )
 }

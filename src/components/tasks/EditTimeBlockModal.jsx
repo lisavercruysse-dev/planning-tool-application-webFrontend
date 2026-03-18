@@ -24,7 +24,7 @@ export default function EditTimeBlockModal({isOpen, onClose, werknemers, task}) 
     </div>
 
     <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-2">
-      <p className="text-gray-400 mt-3">
+      <p className="text-gray-400 mt-3 pl-8">
         De werknemer zal hiervan op de hoogte gebracht worden.
       </p>
       <TaskForm werknemers={werknemers} task={task} onClose={onClose}/>
