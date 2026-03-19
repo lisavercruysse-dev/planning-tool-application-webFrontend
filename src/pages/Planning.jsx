@@ -39,7 +39,9 @@ export default function Planning() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(getDefaultPlantId);
-  const [selectedTeam,  setSelectedTeam]  = useState(teamsForPlant(getDefaultPlantId)[0]?.id ?? null);
+  const [selectedTeam, setSelectedTeam] = useState(
+    teamsForPlant(getDefaultPlantId())[0]?.id ?? null
+  );
   const [modelType, setModelType] = useState("");
   const [tasks, setTasks] = useState(TASK_DATA);
   const [selectedTaskBlock, setSelectedTaskBlock] = useState(null);
@@ -111,9 +113,16 @@ export default function Planning() {
     });
   }, [searchQuery, selectedDate, tasks, user.id, isWerknemer]);
 
-  const uncompletedTasks = tasks.filter(
-    (t) => new Date(t.startdatum) < new Date()
-  );
+  const uncompletedTasks = useMemo(() => {
+    return tasks.filter((t) => {
+      const isPast = new Date(t.startdatum) < new Date();
+
+      const member = USER_DATA.find((u) => u.id === t.memberId);
+      const sameTeam = member?.teamIds?.includes(selectedTeam);
+
+      return isPast && sameTeam;
+    });
+  }, [tasks, selectedTeam]);
 
   return (
     <div className="mx-16 mt-8">
