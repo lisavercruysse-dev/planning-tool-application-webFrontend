@@ -1,5 +1,6 @@
 import { MapPin, Users, User, Settings, Clock, CheckSquare } from "lucide-react";
 import { mockAfwezigheden } from "../../api/mock_absences";
+import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
 
 export default function SiteInfoCard({ 
   site, 
@@ -12,39 +13,15 @@ export default function SiteInfoCard({
     .map((user) => `${user.firstName} ${user.lastName}`)
     .join(", ") || "Geen verantwoordelijke toegewezen";
 
-  const workerCount = userData.filter(
-    (u) => u.plantId === site.id && u.jobTitel === "werknemer"
-  ).length;
+  const {
+    workerCount,
+    afwezigheden,
+    ziekteAfwezigheden,
+    vakantieAfwezigheden,
+    availableWorkers,
+  } = calculateSiteWorkers(site.id, userData, mockAfwezigheden);
 
-   // Alle uniekewerknemer-ID's van deze site
-  const siteWorkerIds = new Set(
-    userData
-      .filter((u) => u.plantId === site.id && u.jobTitel === "werknemer")
-      .map((u) => u.id)
-  );
-
-  const today = new Date();
-
-  const absentWorkerIds = new Set(
-    mockAfwezigheden
-      .filter((afwezigheid) => {
-        const start = new Date(afwezigheid.startDate);
-        const end = new Date(afwezigheid.endDate);
-        return (
-          siteWorkerIds.has(afwezigheid.werknemerId) &&
-          start <= today &&
-          end >= today &&
-          (afwezigheid.status === "Goedgekeurd" || afwezigheid.status === "In behandeling")
-        );
-      })
-      .map((a) => a.werknemerId)
-  );
-
-  const afwezigheden = absentWorkerIds.size;
-
-  console.log(`Afwezigheden voor site ${site.name} (plantId ${site.id}):`, afwezigheden);
-
-  const availableWorkers = workerCount - afwezigheden;
+  console.log(`Site ${site.name} — Totaal afwezig: ${afwezigheden} (Ziekte: ${ziekteAfwezigheden}, Vakantie: ${vakantieAfwezigheden})`);
   
 
   return (
