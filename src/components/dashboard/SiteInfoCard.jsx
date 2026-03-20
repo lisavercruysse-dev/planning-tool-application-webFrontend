@@ -1,4 +1,5 @@
 import { MapPin, Users, User, Settings, Clock, CheckSquare } from "lucide-react";
+import { mockAfwezigheden } from "../../api/mock_absences";
 
 export default function SiteInfoCard({ 
   site, 
@@ -14,6 +15,16 @@ export default function SiteInfoCard({
   const workerCount = userData.filter(
     (u) => u.plantId === site.id && u.jobTitel === "werknemer"
   ).length;
+
+  const availableWorkers = workerCount - mockAfwezigheden.filter((afwezigheid) => {
+    const today = new Date();
+    return (
+      afwezigheid.werknemerId === userData.find((u) => u.plantId === site.id && u.jobTitel === "werknemer")?.id &&
+      new Date(afwezigheid.startDate) <= today &&
+      new Date(afwezigheid.endDate) >= today &&
+      (afwezigheid.status === "Goedgekeurd" || afwezigheid.status === "In behandeling")
+    );
+  }).length;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">
@@ -31,8 +42,7 @@ export default function SiteInfoCard({
         <Users size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
         <div>
           <p className="text-sm font-semibold text-gray-800">
-            <span className="font-normal text-gray-400">{site.totalWorkers ?? "—"}</span>
-            <span> / {workerCount}</span>
+            <span> {availableWorkers} / {workerCount}</span>
             <span className="text-xs text-gray-400"> werknemers</span>
           </p>
         </div>
