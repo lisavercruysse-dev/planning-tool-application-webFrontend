@@ -146,6 +146,8 @@ const PLANTS = [
     id: 1,
     name: "Plant A", 
     location: "Eindhoven, Nederland", 
+    status: "actief",
+    statusProductie: "Waarschuwing",
     lat: 51.44, 
     lng: 5.47
   },
@@ -153,8 +155,37 @@ const PLANTS = [
     id: 2,
     name: "Plant B", 
     location: "Groningen, Nederland", 
+    status: "non-actief",
+    statusProductie: "Offline",
     lat: 53.22, 
     lng: 6.56 
+  },
+  {
+    id: 3,
+    name: "Plant C",
+    location: "Gent, België",
+    status: "actief",
+    statusProductie: "Gezond",
+    lat: 51.05, 
+    lng: 3.74
+  },
+  {
+    id: 4,
+    name: "Plant D",
+    location: "Londen, Verenigd Koninkrijk",
+    status: "actief",
+    statusProductie: "Gezond",
+    lat: 51.51, 
+    lng: -0.13
+  },
+  {
+    id: 5,
+    name: "Plant E",
+    location: "New York, Verenigde Staten",
+    status: "actief",
+    statusProductie: "Gezond",
+    lat: 40.71, 
+    lng: -74.01
   }
 ];
 

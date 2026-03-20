@@ -1,8 +1,28 @@
+import { useState } from "react";
+import DashManagerView from "./DashManagerView";
+import DashManagerDetail from "./DashManagerDetail";
+import { USER_DATA, PLANTS } from "../../api/mock_data";
+
 export default function DashManager() {
+  const [view, setView] = useState("overview");
+  const [selectedSite, setSelectedSite] = useState(null);
+  const userData = USER_DATA;
+
   return (
-    <div>
-      <h1>Manager Dashboard</h1>
-      <p>Welkom, manager! Hier kun je een overzicht van alle teams en prestaties zien.</p>
+    <div className="min-h-screen bg-gray-50 m-4 p-6">
+      {view === "overview" ? (
+        <DashManagerView 
+          userData={userData}
+          selectedSite={selectedSite}
+          setSelectedSite={setSelectedSite}
+          onDetails={() => setView("details")} 
+        />
+      ) : (
+        <DashManagerDetail 
+          selectedSite={selectedSite}
+          onBack={() => setView("overview")} 
+        />
+      )}
     </div>
   );
 }
