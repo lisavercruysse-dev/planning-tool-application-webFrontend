@@ -47,14 +47,14 @@ export const mockAfwezigheden = [
   },
   {
     id: 5,
-    werknemerId: 1,
-    werknemer: "Jonas Van Aert",
+    werknemerId: 7,
+    werknemer: "Lisa Willems",
     startDate: "Mar 15, 2026",
     endDate: "Jul 15, 2026",
     days: "4 maanden",
-    type: "Ziekte",
+    type: "Vakantie",
     status: "Goedgekeurd",
-    reason: "Langdurige ziekte na operatie",
+    reason: "Moederschapverlof",
     canCancel: true,
   }
 ];

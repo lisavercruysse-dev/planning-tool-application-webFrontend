@@ -16,15 +16,31 @@ export default function SiteInfoCard({
     (u) => u.plantId === site.id && u.jobTitel === "werknemer"
   ).length;
 
-  const availableWorkers = workerCount - mockAfwezigheden.filter((afwezigheid) => {
-    const today = new Date();
+   // Alle uniekewerknemer-ID's van deze site
+  const siteWorkerIds = new Set(
+    userData
+      .filter((u) => u.plantId === site.id && u.jobTitel === "werknemer")
+      .map((u) => u.id)
+  );
+
+  const today = new Date();
+
+  const afwezigheden = mockAfwezigheden.filter((afwezigheid) => {
+    const start = new Date(afwezigheid.startDate);
+    const end = new Date(afwezigheid.endDate);
+
     return (
-      afwezigheid.werknemerId === userData.find((u) => u.plantId === site.id && u.jobTitel === "werknemer")?.id &&
-      new Date(afwezigheid.startDate) <= today &&
-      new Date(afwezigheid.endDate) >= today &&
+      siteWorkerIds.has(afwezigheid.werknemerId) &&
+      start <= today &&
+      end >= today &&
       (afwezigheid.status === "Goedgekeurd" || afwezigheid.status === "In behandeling")
     );
   }).length;
+
+  console.log(`Afwezigheden voor site ${site.name} (plantId ${site.id}):`, afwezigheden);
+
+  const availableWorkers = workerCount - afwezigheden;
+  
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">

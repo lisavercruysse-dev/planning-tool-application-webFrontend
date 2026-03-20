@@ -128,7 +128,7 @@ const USER_DATA = [
     email: 'Lisa.Willems@example.com',
     jobTitel: 'werknemer',
     plantId: 1,
-    teamIds: [2]
+    teamIds: [1]
   },
   {
     id: 8,
