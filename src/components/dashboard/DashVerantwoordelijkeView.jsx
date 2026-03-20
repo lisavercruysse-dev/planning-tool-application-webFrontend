@@ -1,10 +1,21 @@
 import SiteInfoCard from "./SiteInfoCard";
+import SiteWorkersPieChart from "./SiteWorkersPieChart";
+import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
+import { mockAfwezigheden } from "../../api/mock_absences";
 
 export default function DashVerantwoordelijkeView({
   plant, 
   userData,
   onDetails
 }) {
+
+  const {
+  workerCount,
+  afwezigheden,
+  ziekteAfwezigheden,
+  vakantieAfwezigheden,
+  availableWorkers,
+} = calculateSiteWorkers(plant.id, userData, mockAfwezigheden);
 
   return (
     <div className="space-y-6">
@@ -19,8 +30,16 @@ export default function DashVerantwoordelijkeView({
         </button>
       </div>
 
-      <div>
+      <div className="flex ml-3 items-center gap-3">
         <SiteInfoCard site={plant} userData={userData}/>
+        <SiteWorkersPieChart 
+          workerCount={workerCount}
+          availableWorkers={availableWorkers}
+          afwezigheden={afwezigheden}
+          ziekteAfwezigheden={ziekteAfwezigheden}
+          vakantieAfwezigheden={vakantieAfwezigheden}
+          siteName={plant.name}
+        />
       </div>
     </div>
   );

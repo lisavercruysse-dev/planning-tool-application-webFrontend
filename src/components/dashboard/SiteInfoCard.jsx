@@ -4,11 +4,11 @@ import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
 
 export default function SiteInfoCard({ 
   site, 
-  userData 
+  userData = []
 }) {
   if (!site) return null;
 
-  const responsible = userData
+  const responsible = (userData ?? [])
     .filter((u) => u.plantId === site.id && u.jobTitel === "verantwoordelijke")
     .map((user) => `${user.firstName} ${user.lastName}`)
     .join(", ") || "Geen verantwoordelijke toegewezen";
@@ -19,10 +19,9 @@ export default function SiteInfoCard({
     ziekteAfwezigheden,
     vakantieAfwezigheden,
     availableWorkers,
-  } = calculateSiteWorkers(site.id, userData, mockAfwezigheden);
+  } = calculateSiteWorkers(site.id, userData ?? [], mockAfwezigheden);
 
   console.log(`Site ${site.name} — Totaal afwezig: ${afwezigheden} (Ziekte: ${ziekteAfwezigheden}, Vakantie: ${vakantieAfwezigheden})`);
-  
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">

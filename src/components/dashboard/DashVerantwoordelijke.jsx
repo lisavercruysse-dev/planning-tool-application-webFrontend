@@ -31,6 +31,7 @@ export default function DashVerantwoordelijke() {
       ) : (
         <DashVerantwoordelijkeDetail 
           plant={plant} 
+          userData={userData}
           onBack={() => setView("dashboard")} 
         />
       )}

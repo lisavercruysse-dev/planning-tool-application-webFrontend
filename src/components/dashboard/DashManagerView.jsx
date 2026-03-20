@@ -3,6 +3,9 @@ import MapAndSitesPanel from "./MapAndSitesPanel";
 import SiteInfoCard from "./SiteInfoCard";
 import NoSiteSelected from "./NoSiteSelected";
 import { ArrowRight } from "lucide-react";
+import SiteWorkersPieChart from "./SiteWorkersPieChart";
+import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
+import { mockAfwezigheden } from "../../api/mock_absences";
 
 export default function DashManagerView({ 
   userData,
@@ -12,6 +15,13 @@ export default function DashManagerView({
 }) {
 
   const handleSelectSite = (site) => setSelectedSite(site);
+  const {
+  workerCount,
+  afwezigheden,
+  ziekteAfwezigheden,
+  vakantieAfwezigheden,
+  availableWorkers,
+} = calculateSiteWorkers(selectedSite?.id, userData, mockAfwezigheden);
 
   return (
     <div className="space-y-6">
@@ -26,19 +36,36 @@ export default function DashManagerView({
         {!selectedSite ? (
           <NoSiteSelected />
         ) : (
-          <div className="w-full p-6 flex justify-start gap-8">
-            <div >
-              {/* Knop naar details */}
-              <div className="flex justify-center mb-4">
-                <button
-                  onClick={onDetails}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-md rounded-md transition-colors"
-                >
-                  Details
-                  <ArrowRight size={18} className="inline-block ml-2" strokeWidth={1.5} />
-                </button>
+          <div className="w-full p-6 flex gap-8">
+            <div className="w-full p-6 flex gap-8">
+  
+              {/* Linkerkant: button naar details + infobox */}
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-center">
+                  <button
+                    onClick={onDetails}
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-md rounded-md transition-colors"
+                  >
+                    Details
+                    <ArrowRight size={18} className="inline-block ml-2" strokeWidth={1.5} />
+                  </button>
+                </div>
+
+                <SiteInfoCard site={selectedSite} userData={userData} />
               </div>
-              <SiteInfoCard site={selectedSite} userData={userData} />
+
+              {/* Rechterkant: piechart Werknemersstatus */}
+              <div>
+                <SiteWorkersPieChart 
+                  workerCount={workerCount}
+                  availableWorkers={availableWorkers}
+                  afwezigheden={afwezigheden}
+                  ziekteAfwezigheden={ziekteAfwezigheden}
+                  vakantieAfwezigheden={vakantieAfwezigheden}
+                  siteName={selectedSite.name}
+                />
+              </div>
+
             </div>
           </div>
         )}

@@ -56,6 +56,18 @@ export const mockAfwezigheden = [
     status: "Goedgekeurd",
     reason: "Moederschapverlof",
     canCancel: true,
+  },
+  {
+    id: 6,
+    werknemerId: 4,
+    werknemer: "Marie Vermeulen",
+    startDate: "Mar 01, 2026",
+    endDate: "Apr 01, 2026",
+    days: "31 dagen",
+    type: "Ziekte",
+    status: "Goedgekeurd",
+    reason: "Chirurgische ingreep aan de knie",
+    canCancel: false,
   }
 ];
 
