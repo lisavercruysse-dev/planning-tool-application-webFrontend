@@ -2,6 +2,7 @@
 import MapAndSitesPanel from "./MapAndSitesPanel";
 import SiteInfoCard from "./SiteInfoCard";
 import NoSiteSelected from "./NoSiteSelected";
+import { ArrowRight } from "lucide-react";
 
 export default function DashManagerView({ 
   userData,
@@ -31,9 +32,10 @@ export default function DashManagerView({
               <div className="flex justify-center mb-4">
                 <button
                   onClick={onDetails}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-500 text-white text-sm font-medium rounded-md transition-colors"
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-md rounded-md transition-colors"
                 >
                   Details
+                  <ArrowRight size={18} className="inline-block ml-2" strokeWidth={1.5} />
                 </button>
               </div>
               <SiteInfoCard site={selectedSite} userData={userData} />
