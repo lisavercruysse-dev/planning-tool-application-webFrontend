@@ -25,17 +25,22 @@ export default function SiteInfoCard({
 
   const today = new Date();
 
-  const afwezigheden = mockAfwezigheden.filter((afwezigheid) => {
-    const start = new Date(afwezigheid.startDate);
-    const end = new Date(afwezigheid.endDate);
+  const absentWorkerIds = new Set(
+    mockAfwezigheden
+      .filter((afwezigheid) => {
+        const start = new Date(afwezigheid.startDate);
+        const end = new Date(afwezigheid.endDate);
+        return (
+          siteWorkerIds.has(afwezigheid.werknemerId) &&
+          start <= today &&
+          end >= today &&
+          (afwezigheid.status === "Goedgekeurd" || afwezigheid.status === "In behandeling")
+        );
+      })
+      .map((a) => a.werknemerId)
+  );
 
-    return (
-      siteWorkerIds.has(afwezigheid.werknemerId) &&
-      start <= today &&
-      end >= today &&
-      (afwezigheid.status === "Goedgekeurd" || afwezigheid.status === "In behandeling")
-    );
-  }).length;
+  const afwezigheden = absentWorkerIds.size;
 
   console.log(`Afwezigheden voor site ${site.name} (plantId ${site.id}):`, afwezigheden);
 
