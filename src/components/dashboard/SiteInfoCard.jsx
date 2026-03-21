@@ -1,19 +1,27 @@
 import { MapPin, Users, User, Settings, Clock, CheckSquare } from "lucide-react";
+import { mockAfwezigheden } from "../../api/mock_absences";
+import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
 
 export default function SiteInfoCard({ 
   site, 
-  userData 
+  userData = []
 }) {
   if (!site) return null;
 
-  const responsible = userData
+  const responsible = (userData ?? [])
     .filter((u) => u.plantId === site.id && u.jobTitel === "verantwoordelijke")
     .map((user) => `${user.firstName} ${user.lastName}`)
     .join(", ") || "Geen verantwoordelijke toegewezen";
 
-  const workerCount = userData.filter(
-    (u) => u.plantId === site.id && u.jobTitel === "werknemer"
-  ).length;
+  const {
+    workerCount,
+    afwezigheden,
+    ziekteAfwezigheden,
+    vakantieAfwezigheden,
+    availableWorkers,
+  } = calculateSiteWorkers(site.id, userData ?? [], mockAfwezigheden);
+
+  console.log(`Site ${site.name} — Totaal afwezig: ${afwezigheden} (Ziekte: ${ziekteAfwezigheden}, Vakantie: ${vakantieAfwezigheden})`);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">
@@ -31,8 +39,7 @@ export default function SiteInfoCard({
         <Users size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
         <div>
           <p className="text-sm font-semibold text-gray-800">
-            <span className="font-normal text-gray-400">{site.totalWorkers ?? "—"}</span>
-            <span> / {workerCount}</span>
+            <span> {availableWorkers} / {workerCount}</span>
             <span className="text-xs text-gray-400"> werknemers</span>
           </p>
         </div>

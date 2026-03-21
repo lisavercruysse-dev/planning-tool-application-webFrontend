@@ -2,6 +2,7 @@ export const mockAfwezigheden = [
   {
     id: 1,
     werknemer: "Jonas Van Aert",
+    werknemerId: 1,
     startDate: "Dec 22, 2025",
     endDate: "Dec 23, 2025",
     days: "2 dagen",
@@ -24,6 +25,7 @@ export const mockAfwezigheden = [
   {
     id: 3,
     werknemer: "Jonas Van Aert",
+    werknemerId: 1,
     startDate: "Jan 05, 2026",
     endDate: "Jan 10, 2026",
     days: "5 dagen",
@@ -43,6 +45,30 @@ export const mockAfwezigheden = [
     reason: "Verhuizing",
     canCancel: false,
   },
+  {
+    id: 5,
+    werknemerId: 7,
+    werknemer: "Lisa Willems",
+    startDate: "Mar 15, 2026",
+    endDate: "Jul 15, 2026",
+    days: "4 maanden",
+    type: "Vakantie",
+    status: "Goedgekeurd",
+    reason: "Moederschapverlof",
+    canCancel: true,
+  },
+  {
+    id: 6,
+    werknemerId: 4,
+    werknemer: "Marie Vermeulen",
+    startDate: "Mar 01, 2026",
+    endDate: "Apr 01, 2026",
+    days: "31 dagen",
+    type: "Ziekte",
+    status: "Goedgekeurd",
+    reason: "Chirurgische ingreep aan de knie",
+    canCancel: false,
+  }
 ];
 
 export const mockStats = {

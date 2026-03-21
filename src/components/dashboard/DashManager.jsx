@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DashManagerView from "./DashManagerView";
 import DashManagerDetail from "./DashManagerDetail";
-import { USER_DATA, PLANTS } from "../../api/mock_data";
+import { USER_DATA } from "../../api/mock_data";
 
 export default function DashManager() {
   const [view, setView] = useState("overview");
@@ -20,6 +20,7 @@ export default function DashManager() {
       ) : (
         <DashManagerDetail 
           selectedSite={selectedSite}
+          userData={userData}
           onBack={() => setView("overview")} 
         />
       )}

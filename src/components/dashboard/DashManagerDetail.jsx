@@ -1,7 +1,10 @@
 // DashManagerDetail.jsx
-import { Package, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import SiteInfoCard from "./SiteInfoCard";
 
-export default function DashManagerDetail({ selectedSite, onBack }) {
+export default function DashManagerDetail({ 
+  selectedSite, userData, onBack 
+}) {
   
   return (
     <div className="space-y-6">
@@ -23,18 +26,14 @@ export default function DashManagerDetail({ selectedSite, onBack }) {
       </div>
 
       {/* Placeholder content */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 text-center">
-        <Package size={64} className="mx-auto text-gray-300 mb-4" strokeWidth={1.5} />
-        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-          Detailweergave nog in ontwikkeling
-        </h2>
-        <p className="text-gray-500 max-w-md mx-auto">
-          Hier komen straks grafieken, taakoverzichten, werknemerbeheer, productie-statistieken,
-          meldingen en beheermogelijkheden voor de geselecteerde plant.
-        </p>
+      <div className="w-full p-6 flex gap-8">
+            <div className="w-full p-6 flex gap-8">
+              {/* Linkerkant: infobox */}
+              <div className="flex flex-col gap-4">
+                <SiteInfoCard site={selectedSite} userData={userData} />
+              </div>
+            </div>
       </div>
-
-      {/* Voorbeeld: je kunt hier later de selectedSite doorgeven en tonen */}
     </div>
   );
 }
