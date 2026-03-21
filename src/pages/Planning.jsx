@@ -12,6 +12,9 @@ import EditTimeBlockModal from "../components/tasks/EditTimeBlockModal.jsx";
 import DeleteTaskModal from "../components/tasks/DeleteTaskModal.jsx";
 import TaskTemplateList from "../components/taskTemplates/TaskTemplateList.jsx";
 import UncompletedTaskList from '../components/tasks/uncompletedTasks/UncompletedTaskList.jsx';
+import useSWR from "swr";
+import { getAll } from "../api/index.js";
+import AsyncData from '../components/asyncData/AsyncData.jsx';
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -25,6 +28,16 @@ export default function Planning() {
   if (!user) {
   return null;
 }
+
+  const {
+    data: werknemerTasks = [],
+    isLoading,
+    error,
+  } = useSWR(`werknemers/${user.id}/taken`, getAll) 
+
+  console.log("taken: ", werknemerTasks)
+
+  console.log("werknemertasks: ", werknemerTasks)
 
   const isManagerOrVerantwoordelijke = user?.jobTitel === "verantwoordelijke" || user?.jobTitel === "manager";
   const isWerknemer = user?.jobTitel === "werknemer";
@@ -101,28 +114,28 @@ export default function Planning() {
   };
 
   const filteredTasks = useMemo(() => {
-     return tasks.filter((task) => {
-      const matchesSearch = task.omschrijving
+     return werknemerTasks?.filter((task) => {
+      const matchesSearch = task.taakTemplate.omschrijving
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
 
-      const taskDate = task.startdatum.split("T")[0];
+      const taskDate = task.datum.split("T")[0];
       const matchesDate = selectedDate ? taskDate === selectedDate : true;
-      const matchesMember = isWerknemer ? task.memberId === user.id : true;
+      const matchesMember = isWerknemer ? task.werknemer.id === user.id : true;
       return matchesSearch && matchesDate && matchesMember;
     });
-  }, [searchQuery, selectedDate, tasks, user.id, isWerknemer]);
+  }, [searchQuery, selectedDate, werknemerTasks, user.id, isWerknemer]);
 
   const uncompletedTasks = useMemo(() => {
-    return tasks.filter((t) => {
-      const isPast = new Date(t.startdatum) < new Date();
+    return werknemerTasks.filter((t) => {
+      const isPast = new Date(t.datum) < new Date();
 
       const member = USER_DATA.find((u) => u.id === t.memberId);
       const sameTeam = member?.teamIds?.includes(selectedTeam);
 
       return isPast && sameTeam;
     });
-  }, [tasks, selectedTeam]);
+  }, [werknemerTasks, selectedTeam]);
 
   return (
     <div className="mx-16 mt-8">
@@ -168,7 +181,8 @@ export default function Planning() {
       </div>
       )}
 
-      {isWerknemer &&    
+      <AsyncData loading={isLoading} error={error}>
+        {isWerknemer &&    
       <TaskList
         tasks={filteredTasks}
         searchQuery={searchQuery}
@@ -178,6 +192,7 @@ export default function Planning() {
         onCancel={(task) => showModal(task, "cancel")}
       />
       }
+      </AsyncData>
 
       {isManagerOrVerantwoordelijke && 
         <UncompletedTaskList tasks={uncompletedTasks} onAssign={showEditTimeBlockModal}/>

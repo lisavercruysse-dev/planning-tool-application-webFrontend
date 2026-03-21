@@ -12,7 +12,7 @@ function toDateInputValue(date) {
 export function PlanningTimeline({ tasks, selectedDate, onEdit }) {
   const dayTasks = useMemo(() => {
     return tasks.filter((task) => {
-      const taskDate = new Date(task.startdatum);
+      const taskDate = new Date(task.datum);
       return toDateInputValue(taskDate) === selectedDate;
     });
   }, [tasks, selectedDate]);

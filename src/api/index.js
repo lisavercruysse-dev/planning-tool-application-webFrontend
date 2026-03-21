@@ -22,6 +22,11 @@ export async function getById(url) {
     return data;
 }
 
+export async function getAll(url) {
+    const { data } = await axios.get(url);
+    return data.items; 
+}
+
 export const post = async (url, {arg}) => {
     const { data } = await axios.post(`${baseUrl}/${url}`, arg);
 
