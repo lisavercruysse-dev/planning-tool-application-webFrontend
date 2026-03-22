@@ -9,6 +9,7 @@ const TASK_DATA = [
     startdatum: "2026-03-02T09:00:00", // Maandag
     status: "Afgewerkt",
     specificaties: "Start en controleer assemblagelijn AL-07 en voer een korte testrun uit.",
+    machineId: 1,
     machine: "MC-PLT-001",
     memberId: 1
   },
@@ -20,6 +21,7 @@ const TASK_DATA = [
     startdatum: "2026-03-04T08:00:00", // Woensdag
     status: "Gepland",
     specificaties: "Controleer en vervang slijtagegevoelige onderdelen, smeer bewegende delen en voer een testcyclus uit.",
+    machineId: 2,
     machine: "MC-ASD-023",
     memberId: 4
   },
@@ -31,6 +33,7 @@ const TASK_DATA = [
     startdatum: "2026-03-05T13:00:00", // Donderdag namiddag
     status: "Gepland",
     specificaties: "Start de productie op lijn C3, controleer de vulmachine, en houd de kwaliteit gedurende de batch in de gaten.",
+    machineId: 3,
     machine: "MC-PLT-100",
     memberId: 5
   },
@@ -42,6 +45,7 @@ const TASK_DATA = [
     startdatum: "2026-03-06T10:30:00", // Vrijdag voormiddag
     status: "Gepland",
     specificaties: "Diagnosticeer sensor E17, vervang defecte componenten en voer kalibratie uit om correcte werking te garanderen.",
+    machineId: 4,
     machine: "MC-HST-003",
     memberId: 6
   },
@@ -53,6 +57,7 @@ const TASK_DATA = [
     startdatum: "2026-03-06T13:00:00", // Vrijdag namiddag
     status: "Afgewerkt",
     specificaties: "Controleer foutcode E18, vervang defecte sensoronderdelen en voer een korte functionele test uit.",
+    machineId: 3,
     machine: "MC-PLT-100",
     memberId: 7
   },
@@ -64,9 +69,34 @@ const TASK_DATA = [
     startdatum: "2026-03-06T14:30:00", // Vrijdag namiddag
     status: "Gepland",
     specificaties: "Controleer de sensoren en rollen, en voer een proefrun uit om de correcte werking te verifiëren.",
+    machineId: 1,
     machine: "MC-PLT-001",
     memberId: 8
   },
+  {
+    id: 7,
+    type: "Inspectie",
+    omschrijving: "Veiligheidsinspectie lijn A",
+    duurtijd: 45,
+    startdatum: "2026-03-22T09:00:00",
+    status: "Gepland",
+    specificaties: "Controleer veiligheidsvoorzieningen op lijn A, test noodstops en rapporteer eventuele gebreken.",
+    machineId: 1,
+    machine: "MC-PLT-001",
+    memberId: 1
+  },
+  {
+    id: 8,
+    type: "Inspectie",
+    omschrijving: "Kwaliteitscontrole lijn C",
+    duurtijd: 60,
+    startdatum: "2026-03-22T10:00:00",
+    status: "Afgewerkt",
+    specificaties: "Start en controleer assemblagelijn CL-12 en voer een korte testrun uit.",
+    machineId: 1,
+    machine: "MC-PLT-001",
+    memberId: 1
+  }
 ];
 
 const USER_DATA = [
@@ -215,7 +245,28 @@ const TEAMS = [
 const MACHINE_DATA = [
   {
     id: 1,
+    plantId: 1,
     name: "MC-PLT-001"
+  },
+  {
+    id: 2,
+    plantId: 1,
+    name: "MC-ASD-023"
+  },
+  {
+    id: 3,
+    plantId: 1,
+    name: "MC-PLT-100"
+  },
+  {
+    id: 4,
+    plantId: 1,
+    name: "MC-HST-003"
+  },
+  {
+    id: 5,
+    plantId: 2,
+    name: "MC-GRN-001"
   }
 ]
 
