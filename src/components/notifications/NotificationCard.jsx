@@ -1,11 +1,10 @@
 import React from "react";
-import { FileText, Trash2, ArrowRight, Check } from "lucide-react";
+import { FileText, ArrowRight, Check } from "lucide-react";
+import { useNavigate } from "react-router";
 
-export default function NotificationCard({
-  notification,
-  onMarkAsRead,
-  onDelete,
-}) {
+export default function NotificationCard({ notification, onMarkAsRead }) {
+  const navigate = useNavigate();
+
   return (
     <div
       data-cy="notification-card"
@@ -48,12 +47,9 @@ export default function NotificationCard({
 
         <div className="flex items-center justify-end gap-2 w-full">
           <button
-            onClick={() => onDelete(notification.id)}
-            className="text-gray-400 hover:text-[#b64949] transition-colors p-2 rounded-md hover:bg-white border border-transparent hover:border-gray-200"
+            onClick={() => navigate(`/meldingen/${notification.id}`)}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium"
           >
-            <Trash2 className="w-4 h-4" />
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium">
             Bekijk <ArrowRight className="w-4 h-4" />
           </button>
         </div>
