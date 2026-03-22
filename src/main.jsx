@@ -7,7 +7,6 @@ import Layout from "./pages/Layout.jsx";
 import Login from "./pages/Login.jsx";
 import AbsenceOverview from "./pages/AbsenceOverview.jsx";
 import Notifications from "./pages/Notifications.jsx";
-import NotificationDetail from "./pages/NotificationDetail.jsx";
 import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
@@ -51,10 +50,6 @@ const router = createBrowserRouter([
       {
         path: "/meldingen",
         Component: Notifications,
-      },
-      {
-        path: "/meldingen/:id",
-        Component: NotificationDetail,
       },
     ],
   },

@@ -1,10 +1,11 @@
 import React from "react";
 import { FileText, ArrowRight, Check } from "lucide-react";
-import { useNavigate } from "react-router";
 
-export default function NotificationCard({ notification, onMarkAsRead }) {
-  const navigate = useNavigate();
-
+export default function NotificationCard({
+  notification,
+  onMarkAsRead,
+  onView,
+}) {
   return (
     <div
       data-cy="notification-card"
@@ -47,7 +48,7 @@ export default function NotificationCard({ notification, onMarkAsRead }) {
 
         <div className="flex items-center justify-end gap-2 w-full">
           <button
-            onClick={() => navigate(`/meldingen/${notification.id}`)}
+            onClick={() => onView(notification.id)}
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium"
           >
             Bekijk <ArrowRight className="w-4 h-4" />
