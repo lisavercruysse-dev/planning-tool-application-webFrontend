@@ -31,7 +31,21 @@ export function TaskCards({ tasks, searchQuery, setSearchQuery, onTaskDetailsCli
 
       <div className="divide-y divide-gray-200">
         {tasks.length ? (
-          tasks.map((t) => <TaskCard key={t.id} {...t} onDetailsClick={() => onTaskDetailsClick(t)} onCompleted={() => onCompleted(t)} onCancel={() => onCancel(t)}/>)
+          tasks.map((t) => (
+            <TaskCard
+              key={t.id}
+              id={t.id}
+              omschrijving={t.taakTemplate?.omschrijving ?? "Onbekend"}
+              datum={t.datum}
+              type={t.taakTemplate?.type ?? "Onbekend"}
+              duurtijd={t.taakTemplate?.duurTijd ?? 0}
+              status={t.status}
+              task={t}
+              onDetailsClick={() => onTaskDetailsClick(t)}
+              onCompleted={() => onCompleted(t)}
+              onCancel={() => onCancel(t)}
+            />
+          ))
         ) : (
           <div className="w-full flex flex-col items-center justify-center mt-10 mb-20">
             <img src={img} alt="niks gevonden" className="max-w-xs" data-cy="empty" />

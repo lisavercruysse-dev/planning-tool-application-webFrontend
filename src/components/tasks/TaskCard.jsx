@@ -10,7 +10,6 @@ function getColorClass(letter) {
     "bg-orange-100 text-orange-800",
   ];
 
-  // ascii code van hoofdletter
   const code = letter.toUpperCase().charCodeAt(0);
   const index = code % colors.length;
 
@@ -22,28 +21,51 @@ const timeFormat = new Intl.DateTimeFormat("nl-BE", {
   minute: "2-digit",
 });
 
+function parseLocalDate(isoString) {
+  if (!isoString) return null;
+
+  const [datePart, timePart] = isoString.split("T");
+  const [year, month, day] = datePart.split("-").map(Number);
+
+  let hour = 0, minute = 0, second = 0;
+
+  if (timePart) {
+    const [h, m, s] = timePart.split(":");
+    hour = Number(h);
+    minute = Number(m);
+    second = Number(s?.split(".")[0] || 0);
+  }
+
+  return new Date(year, month - 1, day, hour, minute, second);
+}
+
 const TaskCardMemoized = memo(function TaskCard({
   id,
   type,
   omschrijving,
   duurtijd,
-  startdatum,
+  datum,
   status,
   task,
   onDetailsClick,
   onCompleted,
-  onCancel
+  onCancel,
 }) {
-  const endTime = new Date(new Date(startdatum).getTime() + duurtijd * 60000);
+  const startDate = parseLocalDate(datum);
+  if (!startDate) return null; // handle null safely
+  const endTime = new Date(startDate.getTime() + duurtijd * 60000);
 
   return (
     <div className="p-4 h-29.25 flex " data-cy="task">
       {/* markeer knop */}
       <div className="min-w-7.5">
-        <button className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10 cursor-pointer flex items-center justify-center text-xs"
-        onClick={status !== "Afgewerkt" ? onCompleted : onCancel}
-        data-cy='complete_button'
-        >{status === "Afgewerkt" ? "x" : ""}</button>
+        <button
+          className="w-4 h-4 bg-[#F3F3F5] rounded-sm border border-black/10 cursor-pointer flex items-center justify-center text-xs"
+          onClick={status !== "Afgewerkt" ? onCompleted : onCancel}
+          data-cy="complete_button"
+        >
+          {status === "afgewerkt" ? "x" : ""}
+        </button>
       </div>
 
       {/* taak inhoud */}
@@ -56,10 +78,14 @@ const TaskCardMemoized = memo(function TaskCard({
           <div className="flex card-text items-center">
             <IoMdTime className="mr-1" />
             <p className="" data-cy="task_time">
-              {`${timeFormat.format(new Date(startdatum))} - ${timeFormat.format(endTime)}`}
+              {`${timeFormat.format(startDate)} - ${timeFormat.format(endTime)}`}
             </p>
           </div>
-          <button className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white hover:cursor-pointer hover:bg-[#B7C2D2]" onClick={onDetailsClick}  data-cy="detail_button">
+          <button
+            className="bg-[#90A1B9] rounded-lg px-1.75 py-0.5 mt-2 text-white hover:cursor-pointer hover:bg-[#B7C2D2]"
+            onClick={onDetailsClick}
+            data-cy="detail_button"
+          >
             Details
           </button>
         </div>

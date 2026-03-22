@@ -8,7 +8,6 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
   const [amountMinutes, setAmountMinutes] = useState("");
   const [errors, setErrors] = useState({});
 
-
     useEffect(() => {
     if (isOpen && task) {
             setAmountMinutes("");
@@ -130,10 +129,10 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
         ) : (
           <>
             <div className="flex gap-8">
-              <div className="flex flex-col gap-5 p-6">
+              <div className="flex flex-col gap-5 p-6 w-94">
                 <div>
                   <p>Omschrijving</p>
-                  <p className="text-[#737373]" data-cy='taak_omschrijving'>{task.omschrijving}</p>
+                  <p className="text-[#737373]" data-cy='taak_omschrijving'>{task.taakTemplate.omschrijving}</p>
                 </div>
 
                 <div>
@@ -146,24 +145,24 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
                 <div className="flex flex-col">
                   <div className="flex gap-3 items-center" data-cy='taak_startdatum'>
                     <FaRegCalendar />
-                    {task.startdatum.split("T")[0]}
+                    {task.datum.split("T")[0]}
                   </div>
 
                   <div className="flex gap-3 text-[#737373] items-center" data-cy='taak_starttijd'>
                     <CiClock2 />
-                    {task.startdatum.split("T")[1].slice(0, 5)}
+                    {task.datum.split("T")[1].slice(0, 5)}
                   </div>
                 </div>
 
                 <div>
                   <p>Type taak</p>
-                  <p className="text-[#737373]" data-cy='taak_type'>{task.type}</p>
+                  <p className="text-[#737373]" data-cy='taak_type'>{task.taakTemplate.type}</p>
                 </div>
 
                 <div>
                   <p>Afwerktijd</p>
                   <p className="text-[#737373]" data-cy='taak_duurtijd'>
-                    {task.duurtijd ? task.duurtijd + " minuten" : "/"}
+                    {task.taakTemplate.duurTijd ? task.taakTemplate.duurTijd + " minuten" : "/"}
                   </p>
                 </div>
               </div>
@@ -172,7 +171,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             <div className="flex bg-[#F2F2F2] px-8 py-5 justify-between">
               <div>
                 <p>Machine</p>
-                <p className="text-[#737373]" data-cy='taak_machine'>{task.machine}</p>
+                <p className="text-[#737373]" data-cy='taak_machine'>{task.machine.id}</p>
               </div>
 
               <div>
