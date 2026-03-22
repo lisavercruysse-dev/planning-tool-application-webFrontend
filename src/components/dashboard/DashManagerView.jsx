@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import SiteWorkersPieChart from "./SiteWorkersPieChart";
 import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
 import { mockAfwezigheden } from "../../api/mock_absences";
+import KpiStatsTaken from "./KpiStatsTaken";
 
 export default function DashManagerView({ 
   userData,
@@ -32,15 +33,15 @@ export default function DashManagerView({
       />
 
       {/* Onder: placeholder knop naar details, infocard en KPI's */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-120 flex items-center justify-center">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm h-135 flex items-center justify-center">
         {!selectedSite ? (
           <NoSiteSelected />
         ) : (
           <div className="w-full p-6 flex gap-8">
-            <div className="w-full p-6 flex gap-8">
+            <div className="w-full p-6 flex gap-8 items-stretch">
   
               {/* Linkerkant: button naar details + infobox */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 h-full">
                 <div className="flex justify-center">
                   <button
                     onClick={onDetails}
@@ -55,14 +56,19 @@ export default function DashManagerView({
               </div>
 
               {/* Rechterkant: piechart Werknemersstatus */}
-              <div>
+              <div className="h-full flex">
                 <SiteWorkersPieChart 
                   workerCount={workerCount}
                   availableWorkers={availableWorkers}
                   afwezigheden={afwezigheden}
                   ziekteAfwezigheden={ziekteAfwezigheden}
                   vakantieAfwezigheden={vakantieAfwezigheden}
-                  siteName={selectedSite.name}
+                />
+              </div>
+
+              <div className="h-full flex">
+                <KpiStatsTaken 
+                  selectedSite={selectedSite}
                 />
               </div>
 

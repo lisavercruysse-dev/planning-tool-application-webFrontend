@@ -2,6 +2,7 @@ import SiteInfoCard from "./SiteInfoCard";
 import SiteWorkersPieChart from "./SiteWorkersPieChart";
 import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
 import { mockAfwezigheden } from "../../api/mock_absences";
+import KpiStatsTaken from "./KpiStatsTaken";
 
 export default function DashVerantwoordelijkeView({
   plant, 
@@ -30,16 +31,23 @@ export default function DashVerantwoordelijkeView({
         </button>
       </div>
 
-      <div className="flex ml-3 items-center gap-3">
-        <SiteInfoCard site={plant} userData={userData}/>
-        <SiteWorkersPieChart 
-          workerCount={workerCount}
-          availableWorkers={availableWorkers}
-          afwezigheden={afwezigheden}
-          ziekteAfwezigheden={ziekteAfwezigheden}
-          vakantieAfwezigheden={vakantieAfwezigheden}
-          siteName={plant.name}
-        />
+      <div className="flex m-4 items-stretch gap-4">
+        <div className="flex-1">
+          <SiteInfoCard site={plant} userData={userData}/>
+        </div>
+        <div className="flex-1">
+          <SiteWorkersPieChart 
+            workerCount={workerCount}
+            availableWorkers={availableWorkers}
+            afwezigheden={afwezigheden}
+            ziekteAfwezigheden={ziekteAfwezigheden}
+            vakantieAfwezigheden={vakantieAfwezigheden}
+            siteName={plant.name}
+          />
+        </div>  
+        <div className="flex-1">
+          <KpiStatsTaken selectedSite={plant} />
+        </div>
       </div>
     </div>
   );

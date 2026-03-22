@@ -1,33 +1,22 @@
-// src/components/dashboard/SiteWorkersPieChart.jsx
+// src/components/dashboard/SiteTasksPieChart.jsx
 import { PieChart, Pie } from "recharts";
 
-export default function SiteWorkersPieChart({
-  workerCount,
-  availableWorkers,
-  afwezigheden,
-  ziekteAfwezigheden,
-  vakantieAfwezigheden,
+export default function SiteTasksPieChart({
+  openTaken,
+  toegewezenTaken,
 }) {
-  const otherAfwezig = Math.max(
-    0,
-    afwezigheden - ziekteAfwezigheden - vakantieAfwezigheden
-  );
-
   const segments = [
-    { name: "Beschikbaar", value: availableWorkers,    fill: "#10b981" },
-    { name: "Ziekte",      value: ziekteAfwezigheden,  fill: "#ef4444" },
-    { name: "Vakantie",    value: vakantieAfwezigheden, fill: "#f59e0b" },
-    ...(otherAfwezig > 0
-      ? [{ name: "Overig", value: otherAfwezig, fill: "#6b7280" }]
-      : []),
+    { name: "Open",      value: openTaken,       fill: "#f59e0b" },
+    { name: "Afgewerkt", value: toegewezenTaken, fill: "#10b981" },
   ].filter((seg) => seg.value > 0);
 
+  const totaal = openTaken + toegewezenTaken;
   const totalForPie = segments.reduce((sum, s) => sum + s.value, 0) || 1;
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-full flex flex-col items-center">
       <h3 className="font-semibold text-gray-800 text-base mb-4">
-        Werknemersstatus
+        Open vs Afgewerkte Taken
       </h3>
 
       {/* Donut Pie Chart */}
@@ -47,13 +36,13 @@ export default function SiteWorkersPieChart({
           />
         </PieChart>
 
-        {/* Centrale tekst (overlay) */}
+        {/* Centrale tekst */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span className="text-3xl font-bold text-gray-800 leading-none">
-            {availableWorkers}
+            {openTaken}
           </span>
           <span className="text-[11px] text-slate-500 mt-1">
-            van {workerCount}
+            van {totaal}
           </span>
         </div>
       </div>
@@ -73,7 +62,9 @@ export default function SiteWorkersPieChart({
               </div>
               <div className="text-right">
                 <span className="font-semibold text-gray-800">{seg.value}</span>
-                <span className="ml-1.5 text-xs text-gray-400">({percentage}%)</span>
+                <span className="ml-1.5 text-xs text-gray-400">
+                  ({percentage}%)
+                </span>
               </div>
             </div>
           );
@@ -81,7 +72,7 @@ export default function SiteWorkersPieChart({
       </div>
 
       <p className="text-[12px] text-gray-400 mt-4">
-        Totaal werknemers: {workerCount} • Afwezig: {afwezigheden}
+        Totaal taken: {totaal}
       </p>
     </div>
   );

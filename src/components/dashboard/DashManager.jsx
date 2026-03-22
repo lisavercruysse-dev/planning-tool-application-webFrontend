@@ -9,7 +9,7 @@ export default function DashManager() {
   const userData = USER_DATA;
 
   return (
-    <div className="min-h-screen bg-gray-50 m-4 p-6">
+    <div className="min-h-screen bg-gray-50 m-2 p-6">
       {view === "overview" ? (
         <DashManagerView 
           userData={userData}

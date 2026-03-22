@@ -1,6 +1,8 @@
-import { MapPin, Users, User, Settings, Clock, CheckSquare } from "lucide-react";
+import { MapPin, Users, User, Settings, Clock, CheckSquare, ListTodo } from "lucide-react";
 import { mockAfwezigheden } from "../../api/mock_absences";
 import { calculateSiteWorkers } from "../../utils/calculateSiteWorkers";
+import { berekenTaakStatsPerSite } from "../../utils/berekenTaakStatsPerSite";
+import { TASK_DATA, MACHINE_DATA } from "../../api/mock_data";
 
 export default function SiteInfoCard({ 
   site, 
@@ -22,6 +24,13 @@ export default function SiteInfoCard({
   } = calculateSiteWorkers(site.id, userData ?? [], mockAfwezigheden);
 
   console.log(`Site ${site.name} — Totaal afwezig: ${afwezigheden} (Ziekte: ${ziekteAfwezigheden}, Vakantie: ${vakantieAfwezigheden})`);
+
+  const {
+    gemiddeldeVoltooiingstijd,
+    geplandVandaag,
+    afgewerktVandaag
+  } = berekenTaakStatsPerSite(TASK_DATA, MACHINE_DATA, site.id);
+  console.log(`Gemiddelde voltooiingstijd: ${gemiddeldeVoltooiingstijd} minuten, Afgewerkt vandaag: ${afgewerktVandaag}`)
 
   return (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 w-72 flex flex-col gap-5">
@@ -94,7 +103,18 @@ export default function SiteInfoCard({
         <div>
           <p className="text-xs text-gray-400">Gemiddelde duur taak voltooien</p>
           <p className="text-sm font-semibold text-gray-800">
-            {site.avgTaskMinutes ?? "—"} minuten
+            {gemiddeldeVoltooiingstijd ?? "—"} minuten
+          </p>
+        </div>
+      </div>
+
+      {/* Geplande taken vandaag */}
+      <div className="flex items-center gap-3">
+        <ListTodo size={22} className="text-gray-400 shrink-0" strokeWidth={1.5} />
+        <div>
+          <p className="text-xs text-gray-400">Aantal geplande taken vandaag</p>
+          <p className="text-sm font-semibold text-gray-800">
+            {geplandVandaag ?? "—"}
           </p>
         </div>
       </div>
@@ -105,10 +125,11 @@ export default function SiteInfoCard({
         <div>
           <p className="text-xs text-gray-400">Aantal voltooide taken vandaag</p>
           <p className="text-sm font-semibold text-gray-800">
-            {site.tasksCompletedToday ?? "—"}
+            {afgewerktVandaag ?? "—"}
           </p>
         </div>
       </div>
+
     </div>
   );
 }
