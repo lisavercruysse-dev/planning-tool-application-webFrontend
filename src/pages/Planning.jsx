@@ -60,6 +60,7 @@ export default function Planning() {
   const [selectedTaskBlock, setSelectedTaskBlock] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
+
   // Update team when plant changes
   function handlePlantChange(plantId) {
     const id = Number(plantId);
@@ -121,7 +122,7 @@ export default function Planning() {
 
       const taskDate = task.datum.split("T")[0];
       const matchesDate = selectedDate ? taskDate === selectedDate : true;
-      const matchesMember = isWerknemer ? task.werknemer.id === user.id : true;
+      const matchesMember = isWerknemer ? task.werknemerId === user.id : true;
       return matchesSearch && matchesDate && matchesMember;
     });
   }, [searchQuery, selectedDate, werknemerTasks, user.id, isWerknemer]);
@@ -175,7 +176,7 @@ export default function Planning() {
               tasks={memberTasks(member.id)}
               onEdit={(task) => showEditTimeBlockModal(task)}
               onDelete={(task) => showDeleteTaskModal(task)}
-            /> // onEdit en onDelete nog toevoegen
+            /> 
           ))
         )}
       </div>
@@ -202,14 +203,13 @@ export default function Planning() {
         <TaskTemplateList taskTemplates={TASK_TEMPLATE_DATA} onAssign={showEditTimeBlockModal}/>
       }
 
-      <TaskDetailsModal 
-        isOpen={!!selectedTask}
-        onClose={closeModal}
-        task={selectedTask}
-        type={modelType}
-        onSubmit={handleSubmitTask}
-        onCancel={handleSubmitTask}
-      />
+        <TaskDetailsModal 
+          isOpen={!!selectedTask}
+          onClose={closeModal}
+          task={selectedTask}
+          type={modelType}
+          onSubmit={handleSubmitTask}
+        />
 
       <EditTimeBlockModal
         isOpen={!!selectedTaskBlock}

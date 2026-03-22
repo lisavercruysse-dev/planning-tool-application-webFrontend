@@ -3,17 +3,27 @@ import { FaRegCalendar } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
 import { useState } from "react";
 import { useEffect } from "react";
+import useSWR from "swr";
+import { getById } from "../../api";
+import AsyncData from "../asyncData/AsyncData";
 
 export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit }) {
   const [amountMinutes, setAmountMinutes] = useState("");
   const [errors, setErrors] = useState({});
 
-    useEffect(() => {
+  console.log("task ID: ", task?.id)
+  
+  const { data: taskDetails, isLoading, error } = useSWR(
+    task?.id ? `taken/${task.id}/details` : null,
+    getById
+  );
+
+  useEffect(() => {
     if (isOpen && task) {
-            setAmountMinutes("");
-            setErrors({});
-        }
-    }, [isOpen, task]);
+      setAmountMinutes("");
+      setErrors({});
+    }
+  }, [isOpen, task]);
 
   const validate = () => {
     const newErrors = {};
@@ -128,7 +138,8 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             </div>
         ) : (
           <>
-            <div className="flex gap-8">
+          <AsyncData isLoading={isLoading} error={error}>
+           <div className="flex gap-8">
               <div className="flex flex-col gap-5 p-6 w-94">
                 <div>
                   <p>Omschrijving</p>
@@ -171,19 +182,20 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             <div className="flex bg-[#F2F2F2] px-8 py-5 justify-between">
               <div>
                 <p>Machine</p>
-                <p className="text-[#737373]" data-cy='taak_machine'>{task.machine.id}</p>
+                <p className="text-[#737373]" data-cy='taak_machine'>{taskDetails?.machine?.machineName}</p>
               </div>
 
               <div>
                 <p>Site</p>
-                <p className="text-[#737373]" data-cy='taak_machine_sitelocatie'>Site Noord</p>
+                <p className="text-[#737373]" data-cy='taak_machine_sitelocatie'>{taskDetails?.machine?.siteName}</p>
               </div>
 
               <div>
                 <p>Locatie In Site</p>
-                <p className="text-[#737373]" data-cy='taak_machine_locatie'>A001 - Hal A</p>
+                <p className="text-[#737373]" data-cy='taak_machine_locatie'>{taskDetails?.machine?.locationOnSite}</p>
               </div>
             </div>
+          </AsyncData>
           </>
         )}
       </div>
