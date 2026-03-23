@@ -7,7 +7,6 @@ import Layout from "./pages/Layout.jsx";
 import Login from "./pages/Login.jsx";
 import AbsenceWrapper from "./components/absences/AbsenceWrapper.jsx";
 import Notifications from "./pages/Notifications.jsx";
-import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
 import Logout from "./pages/Logout.jsx";
