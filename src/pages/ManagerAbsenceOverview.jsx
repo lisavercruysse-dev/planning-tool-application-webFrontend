@@ -1,11 +1,41 @@
 import React, { useState } from "react";
+import useSWR from "swr";
 import { Search, Filter } from "lucide-react";
-import { mockAfwezigheden } from "../api/mock_absences";
+import { useAuth } from "../contexts/auth";
+import * as absencesApi from "../api/absences";
 import ManagerAbsenceRow from "../components/absences/ManagerAbsenceRow";
 import ConfirmModal from "../components/absences/ConfirmModal";
+import AsyncData from "../components/asyncData/AsyncData";
+
+function formatDate(isoDate) {
+  if (!isoDate) return "";
+  return new Date(isoDate + "T00:00:00").toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
 
 export default function ManagerAbsenceOverview() {
-  const [aanvragen, setAanvragen] = useState(mockAfwezigheden);
+  const { user } = useAuth();
+
+  const {
+    data: rawAanvragen,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(
+    user ? `afwezigheden-all-${user.id}` : null,
+    absencesApi.getAllAbsences,
+  );
+
+  const aanvragen = (rawAanvragen ?? []).map((a) => ({
+    ...a,
+    startDate: formatDate(a.startDate),
+    endDate: formatDate(a.endDate),
+    days: `${a.days} ${a.days === 1 ? "dag" : "dagen"}`,
+  }));
+
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("In behandeling");
   const [typeFilter, setTypeFilter] = useState("Alles");
@@ -15,20 +45,25 @@ export default function ManagerAbsenceOverview() {
     id: null,
     status: null,
   });
+  const [actionError, setActionError] = useState(null);
 
   const handleActionClick = (id, newStatus) => {
     setPendingAction({ id, status: newStatus });
     setConfirmModalOpen(true);
   };
 
-  const executeAction = () => {
-    setAanvragen((prev) =>
-      prev.map((aanvraag) =>
-        aanvraag.id === pendingAction.id
-          ? { ...aanvraag, status: pendingAction.status }
-          : aanvraag,
-      ),
-    );
+  const executeAction = async () => {
+    try {
+      if (pendingAction.status === "Goedgekeurd") {
+        await absencesApi.approveAbsence(pendingAction.id);
+      } else {
+        await absencesApi.rejectAbsence(pendingAction.id);
+      }
+      setActionError(null);
+      mutate();
+    } catch {
+      setActionError("Er is een fout opgetreden. Probeer het opnieuw.");
+    }
     setConfirmModalOpen(false);
     setPendingAction({ id: null, status: null });
   };
@@ -103,19 +138,26 @@ export default function ManagerAbsenceOverview() {
           </h2>
         </div>
         <div className="p-5 flex flex-col gap-4">
-          {filteredAanvragen.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-4">
-              Er zijn geen aanvragen die voldoen aan uw criteria.
-            </p>
-          ) : (
-            filteredAanvragen.map((item) => (
-              <ManagerAbsenceRow
-                key={item.id}
-                item={item}
-                onAction={handleActionClick}
-              />
-            ))
+          {actionError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+              {actionError}
+            </div>
           )}
+          <AsyncData loading={isLoading} error={error}>
+            {filteredAanvragen.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">
+                Er zijn geen aanvragen die voldoen aan uw criteria.
+              </p>
+            ) : (
+              filteredAanvragen.map((item) => (
+                <ManagerAbsenceRow
+                  key={item.id}
+                  item={item}
+                  onAction={handleActionClick}
+                />
+              ))
+            )}
+          </AsyncData>
         </div>
       </div>
 

@@ -1,14 +1,46 @@
 import React, { useState } from "react";
+import useSWR from "swr";
 import StatCard from "../components/absences/StatCard";
 import AbsenceRow from "../components/absences/AbsenceRow";
 import AbsenceModal from "../components/absences/AbsenceModal";
 import ErrorModal from "../components/absences/ErrorModal";
 import ConfirmModal from "../components/absences/ConfirmModal";
-import { mockAfwezigheden, mockStats } from "../api/mock_absences";
+import AsyncData from "../components/asyncData/AsyncData";
+import { useAuth } from "../contexts/auth";
+import * as absencesApi from "../api/absences";
 import { Plane, PlusSquare } from "lucide-react";
 
+function formatDate(isoDate) {
+  if (!isoDate) return "";
+  return new Date(isoDate + "T00:00:00").toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default function AbsenceOverview() {
-  const [absences, setAbsences] = useState(mockAfwezigheden);
+  const { user } = useAuth();
+
+  const { data, isLoading, error, mutate } = useSWR(
+    user ? `afwezigheden-me-${user.id}` : null,
+    absencesApi.getMyAbsences,
+  );
+
+  const rawAbsences = data?.absences ?? [];
+  const stats = data?.stats ?? {
+    totaleZiektedagen: 0,
+    totaleVakantiedagen: 0,
+  };
+
+  const absences = rawAbsences.map((a) => ({
+    ...a,
+    startDate: formatDate(a.startDate),
+    endDate: formatDate(a.endDate),
+    days: `${a.days} ${a.days === 1 ? "dag" : "dagen"}`,
+  }));
+
+  const [submitError, setSubmitError] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -49,32 +81,29 @@ export default function AbsenceOverview() {
     setModalType("");
   };
 
-  const handleSubmitAbsence = (data) => {
-    const newAbsence = {
-      id: Math.random(),
-      startDate: new Date(data.startDate).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      endDate: new Date(data.endDate).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      days: `${
-        Math.ceil(
-          (new Date(data.endDate) - new Date(data.startDate)) /
-            (1000 * 60 * 60 * 24),
-        ) + 1
-      } days`,
-      type: data.type,
-      status: "In behandeling",
-      canCancel: true,
-      reason: data.reason,
-    };
+  const handleSubmitAbsence = async (formData) => {
+    const startDate = formData.startDate;
+    const endDate = formData.endDate;
+    const days =
+      Math.ceil(
+        (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24),
+      ) + 1;
 
-    setAbsences([newAbsence, ...absences]);
+    try {
+      await absencesApi.createAbsence({
+        startDate,
+        endDate,
+        days,
+        type: formData.type,
+        reason: formData.reason,
+      });
+      setSubmitError(null);
+      mutate();
+    } catch {
+      setSubmitError(
+        "Er is een fout opgetreden bij het indienen van uw aanvraag. Probeer het opnieuw.",
+      );
+    }
   };
 
   const handleCancelClick = (id) => {
@@ -82,8 +111,15 @@ export default function AbsenceOverview() {
     setCancelModalOpen(true);
   };
 
-  const handleConfirmCancel = () => {
-    setAbsences(absences.filter((a) => a.id !== absenceIdToCancel));
+  const handleConfirmCancel = async () => {
+    try {
+      await absencesApi.cancelAbsence(absenceIdToCancel);
+      mutate();
+    } catch {
+      setSubmitError(
+        "Er is een fout opgetreden bij het annuleren. Probeer het opnieuw.",
+      );
+    }
     setCancelModalOpen(false);
     setAbsenceIdToCancel(null);
   };
@@ -115,13 +151,19 @@ export default function AbsenceOverview() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <StatCard
           label="Totale ziektedagen dit jaar"
-          value={mockStats.totaleZiektedagen}
+          value={stats.totaleZiektedagen}
         />
         <StatCard
           label="Totale vakantiedagen dit jaar"
-          value={mockStats.totaleVakantiedagen}
+          value={stats.totaleVakantiedagen}
         />
       </div>
+
+      {submitError && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+          {submitError}
+        </div>
+      )}
 
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
         <div className="p-5 border-b border-gray-100">
@@ -130,13 +172,21 @@ export default function AbsenceOverview() {
           </h2>
         </div>
         <div className="p-5 flex flex-col gap-4">
-          {absences.map((item) => (
-            <AbsenceRow
-              key={item.id}
-              item={item}
-              onCancel={handleCancelClick}
-            />
-          ))}
+          <AsyncData loading={isLoading} error={error}>
+            {absences.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">
+                U heeft nog geen afwezigheden geregistreerd.
+              </p>
+            ) : (
+              absences.map((item) => (
+                <AbsenceRow
+                  key={item.id}
+                  item={item}
+                  onCancel={handleCancelClick}
+                />
+              ))
+            )}
+          </AsyncData>
         </div>
       </div>
 
