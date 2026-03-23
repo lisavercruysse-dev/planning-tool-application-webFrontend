@@ -6,13 +6,11 @@ import { getById } from "../../api";
 import AsyncData from "../asyncData/AsyncData";
 import { useForm } from "react-hook-form";
 
-export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit }) {
-  const {register, handleSubmit, formState: {errors, isValid}, reset} = useForm({
+export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit, mutate }) {
+  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
     mode: 'onBlur',
-  })
+  });
 
-  console.log("task ID: ", task?.id)
-  
   const { data: taskDetails, isLoading, error } = useSWR(
     task?.id ? `taken/${task.id}/details` : null,
     getById
@@ -21,16 +19,16 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
   const validationRules = {
     tijdGespendeerd: {
       required: 'Geef het aantal gespendeerde minuten in',
-      min: {value: 15, message: 'Gespendeerde tijd moet minstens 15 minuten zijn.'},
-      max: {value: 480, message: 'Gespendeerde tijd kan niet langer dan 480 minuten zijn'}
+      min: { value: 15, message: 'Gespendeerde tijd moet minstens 15 minuten zijn.' },
+      max: { value: 480, message: 'Gespendeerde tijd kan niet langer dan 480 minuten zijn.' }
     }
-  }
+  };
 
   const handleFormSubmit = async (values) => {
     let payload;
 
     if (type === "complete") {
-      if (!isValid) return; 
+      if (!isValid) return;
       payload = {
         status: "afgewerkt",
         tijdGespendeerd: Number(values.tijdGespendeerd),
@@ -47,6 +45,13 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
     await onSubmit(payload, {
       throwOnError: false,
       onSuccess: () => {
+        if (mutate) {
+          mutate((tasks) =>
+            tasks.map((t) =>
+              t.id === task.id ? { ...t, status: payload.status } : t
+            ), false
+          );
+        }
         reset();
         onClose();
       },
@@ -88,7 +93,7 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
                 data-cy='task_complete_input'
                 type="number"
                 placeholder="Aantal minuten"
-                className={`w-full bg-[#F3F3F5] rounded-md px-3 py-2 text-sm text-[#717182] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                className="w-full bg-[#F3F3F5] rounded-md px-3 py-2 text-sm text-[#717182] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               {errors.tijdGespendeerd && <p className="text-red-500 text-sm mt-1">{errors.tijdGespendeerd.message}</p>}
 
@@ -111,30 +116,31 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
             </form>
           </div>
         ) : type === "cancel" ? (
-            <div className="flex flex-col p-5 gap-2 items-start">
-                <p>
-                    Weet je zeker dat je de taak wil markeren als onafgewerkt?
-                    Al uw gespendeerde tijd zal gereset worden.
-                </p>
-                <div className="flex items-center justify-end gap-3 mt-4"> 
-                    <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
-                            onClick={onClose}
-                            data-cy='task_cancel_markeer_onafgewerkt'
-                    >
-                        Annuleren
-                    </button>
-                    <button className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
-                            onClick={handleFormSubmit}
-                            data-cy='task_markeer_onafgewerkt'
-                    >
-                        Bevestigen
-                    </button>
-                </div>   
+          <div className="flex flex-col p-5 gap-2 items-start">
+            <p>
+              Weet je zeker dat je de taak wil markeren als onafgewerkt?
+              Al uw gespendeerde tijd zal gereset worden.
+            </p>
+            <div className="flex items-center justify-end gap-3 mt-4">
+              <button
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={onClose}
+                data-cy='task_cancel_markeer_onafgewerkt'
+              >
+                Annuleren
+              </button>
+              <button
+                className="cursor-pointer px-4 py-2 bg-[#4863d6] text-white rounded-md text-sm font-medium hover:bg-[#3c52b3] transition-colors"
+                onClick={handleFormSubmit}
+                data-cy='task_markeer_onafgewerkt'
+              >
+                Bevestigen
+              </button>
             </div>
+          </div>
         ) : (
-          <>
           <AsyncData isLoading={isLoading} error={error}>
-           <div className="flex gap-8">
+            <div className="flex gap-8">
               <div className="flex flex-col gap-5 p-6 w-94">
                 <div>
                   <p>Omschrijving</p>
@@ -191,7 +197,6 @@ export default function TaskDetailsModal({ isOpen, onClose, task, type, onSubmit
               </div>
             </div>
           </AsyncData>
-          </>
         )}
       </div>
     </div>

@@ -30,11 +30,7 @@ export default function Planning() {
   return null;
 }
 
-  const {
-    data: werknemerTasks = [],
-    isLoading,
-    error,
-  } = useSWR(`werknemers/${user.id}/taken`, getAll) 
+  const { data: werknemerTasks = [], isLoading, error, mutate } = useSWR(`werknemers/${user.id}/taken`, getAll);
 
   console.log("taken: ", werknemerTasks)
 
@@ -213,6 +209,7 @@ const {
           task={selectedTask}
           type={modelType}
           onSubmit={onSubmit}
+          mutate={mutate}
         />
 
       <EditTimeBlockModal
