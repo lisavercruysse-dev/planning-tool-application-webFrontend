@@ -1,30 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import useSWR from "swr";
 import NotificationCard from "../components/notifications/NotificationCard";
-import { mockNotifications } from "../api/mock_notifications";
+import AsyncData from "../components/asyncData/AsyncData";
 import { Bell, Filter, CheckCheck } from "lucide-react";
+import { useAuth } from "../contexts/auth";
+import * as notificatiesApi from "../api/notifications";
+import { TYPE_LABELS } from "../api/notificationTypes";
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState(mockNotifications);
-  const [readFilter, setReadFilter] = useState("Ongelezen");
+  const { user } = useAuth();
+  const [readFilter, setReadFilter] = useState("Alle");
   const [typeFilter, setTypeFilter] = useState("Alle types");
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const {
+    data: notifications,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(user ? `notificaties-${user.id}` : null, () =>
+    notificatiesApi.getNotifications(user.id),
+  );
 
-  const handleMarkAsRead = (id) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
-    );
-  };
+  const unreadCount = notifications
+    ? notifications.filter((n) => !n.isRead).length
+    : 0;
 
-  const handleMarkAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
-  };
+  const handleMarkAsRead = useCallback(
+    async (id) => {
+      await notificatiesApi.markAsRead(id);
+      mutate(
+        notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+        false,
+      );
+    },
+    [notifications, mutate],
+  );
 
-  const handleDelete = (id) => {
-    setNotifications(notifications.filter((n) => n.id !== id));
-  };
+  const handleMarkAllAsRead = useCallback(async () => {
+    const unread = (notifications || []).filter((n) => !n.isRead);
+    try {
+      await Promise.all(unread.map((n) => notificatiesApi.markAsRead(n.id)));
+      mutate(
+        notifications.map((n) => ({ ...n, isRead: true })),
+        false,
+      );
+    } catch {
+      mutate();
+    }
+  }, [notifications, mutate]);
 
-  const filteredNotifications = notifications.filter((n) => {
+  const filteredNotifications = (notifications || []).filter((n) => {
     const matchesRead =
       readFilter === "Alle" ||
       (readFilter === "Ongelezen" && !n.isRead) ||
@@ -78,9 +103,11 @@ export default function Notifications() {
             className="w-full sm:w-40 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#4863d6] focus:border-transparent"
           >
             <option value="Alle types">Alle types</option>
-            <option value="Taak">Taak</option>
-            <option value="Ziekte">Ziekte</option>
-            <option value="Vakantie">Vakantie</option>
+            {Object.entries(TYPE_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -105,20 +132,21 @@ export default function Notifications() {
           </h2>
         </div>
         <div className="p-5">
-          {filteredNotifications.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-8">
-              Er zijn geen meldingen die voldoen aan je filters.
-            </p>
-          ) : (
-            filteredNotifications.map((notification) => (
-              <NotificationCard
-                key={notification.id}
-                notification={notification}
-                onMarkAsRead={handleMarkAsRead}
-                onDelete={handleDelete}
-              />
-            ))
-          )}
+          <AsyncData loading={isLoading} error={error}>
+            {filteredNotifications.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-8">
+                Er zijn geen meldingen die voldoen aan je filters.
+              </p>
+            ) : (
+              filteredNotifications.map((notification) => (
+                <NotificationCard
+                  key={notification.id}
+                  notification={notification}
+                  onMarkAsRead={handleMarkAsRead}
+                />
+              ))
+            )}
+          </AsyncData>
         </div>
       </div>
     </div>
