@@ -32,3 +32,11 @@ export const post = async (url, {arg}) => {
     const { data } = await axios.post(`${baseUrl}/${url}`, arg);
     return data;
 };
+
+export const save = async (url, {arg: body}) => {
+    await axios.post(url, body);
+}
+
+export const updateById = async (url, { arg: body }) => {
+  await axios.put(url, body);
+};

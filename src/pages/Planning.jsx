@@ -13,8 +13,9 @@ import DeleteTaskModal from "../components/tasks/DeleteTaskModal.jsx";
 import TaskTemplateList from "../components/taskTemplates/TaskTemplateList.jsx";
 import UncompletedTaskList from '../components/tasks/uncompletedTasks/UncompletedTaskList.jsx';
 import useSWR from "swr";
-import { getAll } from "../api/index.js";
+import { getAll, updateById } from "../api/index.js";
 import AsyncData from '../components/asyncData/AsyncData.jsx';
+import useSWRMutation from "swr/mutation";
 
 const teamsForPlant = (plantId) => {
   console.log("plantId type:", typeof plantId, "value:", plantId);
@@ -59,7 +60,14 @@ export default function Planning() {
   const [tasks, setTasks] = useState(TASK_DATA);
   const [selectedTaskBlock, setSelectedTaskBlock] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
-
+  
+const {
+  trigger: onSubmit,
+  error: saveError
+} = useSWRMutation(
+  selectedTask ? `taken/${selectedTask.id}/status` : null,
+  updateById
+);
 
   // Update team when plant changes
   function handlePlantChange(plantId) {
@@ -82,15 +90,11 @@ export default function Planning() {
     });
   }
 
-  const handleSubmitTask = (updatedTask) => {
-    setTasks((oldList) => oldList.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
-    closeModal();
-  }
-
-  const showModal = (task, type) => {
+  const showModal = (task, requestedType) => {
+    const modalType = requestedType === "complete" && task.status === "afgewerkt" ? "cancel" : requestedType;
     setSelectedTask(task);
-    setModelType(type)
-  }
+    setModelType(modalType);
+  };
   const closeModal = () => {
     setSelectedTask(null);
     setModelType("");
@@ -189,7 +193,7 @@ export default function Planning() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onTaskDetailsClick={(task) => showModal(task, "details")}
-        onCompleted={(task) => showModal(task, "complete")}
+        onCompleted={(task) => showModal(task, "complete")} 
         onCancel={(task) => showModal(task, "cancel")}
       />
       }
@@ -208,7 +212,7 @@ export default function Planning() {
           onClose={closeModal}
           task={selectedTask}
           type={modelType}
-          onSubmit={handleSubmitTask}
+          onSubmit={onSubmit}
         />
 
       <EditTimeBlockModal
