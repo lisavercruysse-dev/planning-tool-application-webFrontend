@@ -32,6 +32,21 @@ export default function AbsenceRow({ item, onCancel }) {
             In behandeling
           </span>
         )}
+        {item.status === "Goedgekeurd" && (
+          <span className="px-2 py-1 bg-[#dcfce7] text-[#166534] rounded text-xs">
+            Goedgekeurd
+          </span>
+        )}
+        {item.status === "Geweigerd" && (
+          <span className="px-2 py-1 bg-[#fee2e2] text-[#991b1b] rounded text-xs">
+            Geweigerd
+          </span>
+        )}
+        {item.status === "Geannuleerd" && (
+          <span className="px-2 py-1 bg-[#f3f4f6] text-[#374151] rounded text-xs">
+            Geannuleerd
+          </span>
+        )}
         {item.canCancel && (
           <button
             onClick={() => onCancel(item.id)}

@@ -1,18 +1,17 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import Layout from "./pages/Layout.jsx";
 import Login from "./pages/Login.jsx";
-import AbsenceOverview from "./pages/AbsenceOverview.jsx";
+import AbsenceWrapper from "./components/absences/AbsenceWrapper.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import { Navigate } from "react-router";
 import Dashboard from "./pages/Dashboard.jsx";
 import Planning from "./pages/Planning.jsx";
-import ManagerAbsenceOverview from "./pages/ManagerAbsenceOverview.jsx";
-import { AuthProvider } from "./contexts/Auth.context.jsx";
 import Logout from "./pages/Logout.jsx";
+import { AuthProvider } from "./contexts/Auth.context.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,12 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/afwezigheden",
-        Component: AbsenceOverview,
-      },
-      {
-        // route voor manager weergave voor demo
-        path: "/manager/afwezigheden",
-        Component: ManagerAbsenceOverview,
+        Component: AbsenceWrapper,
       },
       {
         path: "/dashboard",
