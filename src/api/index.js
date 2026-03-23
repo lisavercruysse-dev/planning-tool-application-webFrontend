@@ -4,18 +4,18 @@ import { JWT_TOKEN_KEY } from '../contexts/auth';
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const axios = axiosRoot.create({
-    baseURL: baseUrl
-})
+  baseURL: baseUrl,
+});
 
 axios.interceptors.request.use((config) => {
-    const token = localStorage.getItem(JWT_TOKEN_KEY);
+  const token = localStorage.getItem(JWT_TOKEN_KEY);
 
-    if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-    }
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
 
-    return config;
-})
+  return config;
+});
 
 export async function getById(url) {
     const {data} = await axios.get(url);
@@ -28,7 +28,7 @@ export async function getAll(url) {
 }
 
 export const post = async (url, {arg}) => {
+    console.log('POST payload:', arg);
     const { data } = await axios.post(`${baseUrl}/${url}`, arg);
-
     return data;
-}
+};
