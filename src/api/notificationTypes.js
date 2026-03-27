@@ -6,5 +6,4 @@ export const TYPE_LABELS = {
   ZIEKMELDING: "Ziekmelding",
   VAKANTIEAANVRAAG: "Vakantieaanvraag",
   AFWEZIGHEID_GEANNULEERD: "Afwezigheid geannuleerd",
-  PLANNING: "Planning",
 };
