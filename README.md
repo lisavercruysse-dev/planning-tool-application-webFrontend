@@ -3,7 +3,7 @@
 A web application to manage employees, their absences, and their tasks. The project is part of school assignment where we built a full application (web and desktop) for a real world company.
 
 _note: this is a W.I.P._  
-_New features and improvements are still going to be added_
+_Instead of mock data, the data received from the backend needs to be used_
 
 ## Technologies
 
